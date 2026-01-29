@@ -1,2 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Markdown → One Bash Script (cat > file <<"EOF")</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    textarea {
+      width: 100%;
+      min-height: 400px;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      font-family: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+        "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+        "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      resize: vertical;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .controls {
+      margin: 0.5rem 0 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #22c55e;
+      color: #022c22;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    button.secondary {
+      background: #1d4ed8;
+      color: #e5e7eb;
+    }
+    button.danger {
+      background: #ef4444;
+      color: #fee2e2;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .hint {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      background: #111827;
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-left: 0.25rem;
+    }
+    .status {
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+      color: #9ca3af;
+    }
+    .status strong {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Markdown → one bash script generator</h1>
+    <p class="hint">
+      Paste my markdown answer on the left (with all the <code>```php</code> blocks).  
+      Click <strong>Convert</strong> to get a single bash script that writes each file with <code>cat &gt; file &lt;&lt;"EOF"</code>.
+    </p>
 
-
+    <div class="controls">
+      <button id="convertBtn">Convert to bash script</button>
+      <button id="copyBtn" class="secondary">Copy bash script</button>
+      <button id="clearBtn" class="danger">Clear</button>
+      <span class="status" id="status"></span>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label for="mdInput">
+          Markdown from ChatGPT
+          <span class="badge">input</span>
+        </label>
+        <textarea id="mdInput" placeholder="Paste my markdown answer here..."></textarea>
+        <p class="hint">
+          Filenames are guessed from previous lines like:
+          <br>• <code>File: config.php</code>
+          <br>• <code>### 8) `cancel.php` – simple cancel page</code>
+          <br>• A line starting with something like <code>config.php</code>
+          <br>Patch-style snippets (e.g. “inside successful login branch”) are skipped.
+        </p>
+      </div>
+
+      <div>
+        <label for="bashOutput">
+          Generated bash script
+          <span class="badge">output</span>
+        </label>
+        <textarea id="bashOutput" placeholder="#!/usr/bin/env bash&#10;# will appear here after converting..." readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const mdInput    = document.getElementById('mdInput');
+      const bashOutput = document.getElementById('bashOutput');
+      const convertBtn = document.getElementById('convertBtn');
+      const copyBtn    = document.getElementById('copyBtn');
+      const clearBtn   = document.getElementById('clearBtn');
+      const statusEl   = document.getElementById('status');
+
+      function setStatus(text) {
+        if (!statusEl) return;
+        if (!text) {
+          statusEl.textContent = '';
+        } else {
+          statusEl.innerHTML = '<strong>Status:</strong> ' + text;
+        }
+      }
+
+      function guessFilename(lines, startIndex) {
+        // Look backwards from startIndex-1 for a filename hint.
+        for (let j = startIndex - 1; j >= 0; j--) {
+          let raw = lines[j];
+          if (!raw) continue;
+          let line = raw.trim();
+          if (!line) continue;
+
+          // Pattern: File: config.php
+          let m = line.match(/^File:\s*([^\s]+)$/i);
+          if (m) {
+            return m[1].trim();
+          }
+
+          // Pattern: ### 8) `cancel.php` – description
+          let m2 = line.match(/`([^`]+)`/);
+          if (m2 && m2[1].includes('.')) {
+            return m2[1].trim();
+          }
+
+          // Pattern: line starts with something that looks like filename.ext
+          let m3 = line.match(/^([A-Za-z0-9_.-]+\.[A-Za-z0-9_.-]+)/);
+          if (m3) {
+            return m3[1].trim();
+          }
+        }
+        return null;
+      }
+
+      function isPatchSnippet(block) {
+        const name = block.filename.toLowerCase();
+        const content = block.content.trim();
+
+        // If it's a php file but doesn't contain a PHP open tag, probably a patch
+        if (name.endsWith('.php') && !content.includes('<?php')) {
+          return true;
+        }
+
+        // If it starts with a "inside successful" comment etc., treat as patch
+        if (/^\/\/\s*inside\b/i.test(content)) {
+          return true;
+        }
+
+        // Very tiny snippets with no newlines are also likely patch comments
+        const lineCount = content.split('\n').length;
+        if (name.endsWith('.php') && lineCount <= 4 && !content.includes('class ') && !content.includes('function ')) {
+          return true;
+        }
+
+        return false;
+      }
+
+      function convertMarkdownToBash(md) {
+        const lines = md.split(/\r?\n/);
+        const fileBlocks = [];
+        const shellBlocks = [];
+        let i = 0;
+        let snippetCounter = 1;
+
+        while (i < lines.length) {
+          const line = lines[i];
+          if (line.startsWith('```')) {
+            const fenceLine = line;
+            const lang = fenceLine.replace(/^```+/, '').trim().toLowerCase(); // e.g. php, bash
+            const startIndex = i;
+            i++;
+            const codeLines = [];
+            while (i < lines.length && !lines[i].startsWith('```')) {
+              codeLines.push(lines[i]);
+              i++;
+            }
+            // skip closing fence
+            if (i < lines.length && lines[i].startsWith('```')) {
+              i++;
+            }
+
+            const content = codeLines.join('\n');
+
+            // If it's bash/sh, treat as shell commands, not files
+            if (lang === 'bash' || lang === 'sh') {
+              if (content.trim()) {
+                shellBlocks.push(content);
+              }
+              continue;
+            }
+
+            const filenameGuess = guessFilename(lines, startIndex);
+            let filename;
+            if (filenameGuess) {
+              filename = filenameGuess;
+            } else {
+              const ext = (lang === 'php') ? '.php' :
+                          (lang === 'html') ? '.html' :
+                          (lang === 'sql') ? '.sql' : '.txt';
+              filename = 'snippet_' + (snippetCounter++) + ext;
+            }
+
+            const block = {
+              filename: filename,
+              lang: lang,
+              content: content
+            };
+
+            // Skip patch-style snippets (partial edits)
+            if (isPatchSnippet(block)) {
+              continue;
+            }
+
+            fileBlocks.push(block);
+          } else {
+            i++;
+          }
+        }
+
+        const out = [];
+        out.push('#!/usr/bin/env bash');
+        out.push('set -euo pipefail');
+        out.push('');
+
+        // Add any shell command blocks (composer, npm, etc.)
+        if (shellBlocks.length > 0) {
+          out.push('# ===== Shell commands from markdown (bash blocks) =====');
+          shellBlocks.forEach((cmd, idx) => {
+            out.push('# Block ' + (idx + 1));
+            out.push(cmd);
+            out.push('');
+          });
+          out.push('# ===== End shell commands =====');
+          out.push('');
+        }
+
+        if (fileBlocks.length === 0) {
+          out.push('# No suitable code fences (```...```) found to convert into files.');
+          return out.join('\n');
+        }
+
+        fileBlocks.forEach((block, idx) => {
+          out.push('# ============================================');
+          out.push('# File: ' + block.filename + '  (block ' + (idx + 1) + ')');
+          out.push('cat > "' + block.filename.replace(/"/g, '\\"') + '" <<"EOF"');
+          out.push(block.content);
+          out.push('EOF');
+          out.push('');
+        });
+
+        return out.join('\n');
+      }
+
+      convertBtn.addEventListener('click', function () {
+        const md = mdInput.value || '';
+        if (!md.trim()) {
+          setStatus('Nothing to convert – paste markdown first.');
+          return;
+        }
+        const bash = convertMarkdownToBash(md);
+        bashOutput.value = bash;
+        const fileCount = (bash.match(/cat > "/g) || []).length;
+        setStatus('Converted ' + fileCount + ' code block(s) into heredocs.');
+      });
+
+      copyBtn.addEventListener('click', function () {
+        const text = bashOutput.value || '';
+        if (!text.trim()) {
+          setStatus('Nothing to copy yet.');
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function () {
+          setStatus('Bash script copied to clipboard.');
+        }).catch(function () {
+          setStatus('Could not copy to clipboard.');
+        });
+      });
+
+      clearBtn.addEventListener('click', function () {
+        mdInput.value = '';
+        bashOutput.value = '';
+        setStatus('');
+      });
+    })();
+  </script>
+</body>
+</html>
+
