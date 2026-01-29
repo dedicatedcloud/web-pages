@@ -1,2 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SVG Text Generator (NHS-style controls)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;background:#0b0c0c;color:#fff}
+    .app{max-width:1100px;margin:24px auto;padding:16px;display:grid;gap:16px;grid-template-columns:360px 1fr}
+    @media (max-width:960px){.app{grid-template-columns:1fr}}
+    .panel{background:#111;border:1px solid #333;border-radius:8px;padding:16px}
+    h1{font-size:1.25rem;margin:0 0 12px}
+    .field{margin:0 0 12px}
+    .field label{display:block;font-size:.9rem;margin:0 0 6px;color:#d0d0d0}
+    .row{display:flex;gap:10px}
+    .row>*{flex:1}
+    input[type="text"],textarea,select,input[type="number"]{width:100%;padding:10px 12px;background:#0f1214;border:1px solid #2b2f33;border-radius:6px;color:#f5f5f5;outline:none}
+    textarea{min-height:92px;resize:vertical}
+    .switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+    .btns{display:flex;gap:10px;flex-wrap:wrap}
+    button{padding:10px 14px;border:1px solid #2b2f33;background:#1c2126;color:#fff;border-radius:6px;cursor:pointer}
+    button:hover{background:#232a30}
+    .preview-wrap{display:grid;gap:12px;grid-template-rows:1fr auto}
+    .preview-area{display:grid;place-items:center;background:#0f1214;border:1px dashed #2b2f33;border-radius:8px;min-height:320px;overflow:auto}
+    .preview-area svg{display:block;max-width:100%;height:auto}
+    .code-area{position:relative}
+    .code-area textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;min-height:220px}
+    .small{color:#a0a0a0;font-size:.85rem;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="panel">
+      <h1>SVG Text Generator</h1>
 
-
+      <div class="field">
+        <label for="text">Text (multi-line supported)</label>
+        <textarea id="text" placeholder="Type your text here">NHS</textarea>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="fontFamily">Font family</label>
+          <input id="fontFamily" type="text" value="Arial, Helvetica, sans-serif" placeholder="e.g. Arial, Helvetica, sans-serif">
+        </div>
+        <div class="field">
+          <label for="fontSize">Font size (px)</label>
+          <input id="fontSize" type="number" min="1" step="1" value="120">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="fontWeight">Weight</label>
+          <select id="fontWeight">
+            <option value="600">Semibold (600)</option>
+            <option value="700" selected>Bold (700)</option>
+            <option value="800">Extra Bold (800)</option>
+            <option value="900">Black (900)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="switch"><input id="italic" type="checkbox"> <span>Italic</span></label>
+        </div>
+        <div class="field">
+          <label for="letterSpacing">Letter spacing (px)</label>
+          <input id="letterSpacing" type="number" step="0.1" value="-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="slant">Slant (skew X, degrees)</label>
+          <input id="slant" type="number" step="0.5" value="-12">
+        </div>
+        <div class="field">
+          <label for="strokeWidth">Outline stroke width (px)</label>
+          <input id="strokeWidth" type="number" min="0" step="0.5" value="2">
+        </div>
+        <div class="field">
+          <label for="strokeColor">Outline stroke color</label>
+          <input id="strokeColor" type="text" value="#ffffff">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="lineHeight">Line height (unitless)</label>
+          <input id="lineHeight" type="number" step="0.05" value="1.0">
+        </div>
+        <div class="field">
+          <label for="textColor">Text color</label>
+          <input id="textColor" type="text" value="#ffffff">
+        </div>
+        <div class="field">
+          <label for="bgColor">Background color</label>
+          <input id="bgColor" type="text" value="#005eb8">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="width">Canvas width (px)</label>
+          <input id="width" type="number" min="1" step="1" value="800">
+        </div>
+        <div class="field">
+          <label for="height">Canvas height (px)</label>
+          <input id="height" type="number" min="1" step="1" value="300">
+        </div>
+        <div class="field">
+          <label for="padding">Padding (px)</label>
+          <input id="padding" type="number" min="0" step="1" value="0">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="hAlign">Horizontal align</label>
+          <select id="hAlign">
+            <option value="left">Left</option>
+            <option value="center" selected>Center</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="vAlign">Vertical align</label>
+          <select id="vAlign">
+            <option value="top">Top</option>
+            <option value="middle" selected>Middle</option>
+            <option value="bottom">Bottom</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="switch"><input id="uppercase" type="checkbox" checked> <span>Uppercase</span></label>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button id="nhsPreset" type="button" title="Apply an NHS-like look">NHS-like preset</button>
+        <button id="copyBtn" type="button" aria-live="polite">Copy SVG</button>
+        <button id="downloadBtn" type="button">Download .svg</button>
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+    </section>
+
+    <section class="panel preview-wrap">
+      <div class="preview-area" id="previewArea" aria-label="SVG preview"></div>
+      <div class="code-area">
+        <label for="code"><strong>Generated SVG</strong></label>
+        <textarea id="code" readonly></textarea>
+        <div class="small">
+          Tip: Bold look is achieved by a combination of <em>high weight</em>, <em>negative letter-spacing</em>,
+          <em>italic/slant</em>, and a subtle <em>stroke outline</em> with <code>paint-order: stroke fill</code>.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // --- XML escape ---
+    function escapeXML(str){
+      return (str||'').replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+    }
+    function sanitizeColor(v){v=(v||'').trim(); if(!v) return 'transparent'; if(/url\s*\(/i.test(v) || /javascript:/i.test(v)) return '#000000'; return v;}
+    function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+
+    const els = {
+      text: text, fontFamily: fontFamily, fontSize: fontSize, fontWeight: fontWeight, italic: italic,
+      letterSpacing: letterSpacing, lineHeight: lineHeight, textColor: textColor, bgColor: bgColor,
+      width: width, height: height, padding: padding, hAlign: hAlign, vAlign: vAlign, radius: null,
+      slant: slant, strokeWidth: strokeWidth, strokeColor: strokeColor, uppercase: uppercase,
+      previewArea: document.getElementById('previewArea'), code: code,
+      copyBtn: copyBtn, downloadBtn: downloadBtn, resetBtn: resetBtn, nhsPreset: nhsPreset
+    };
+
+    const defaults = {
+      text: 'NHS', fontFamily: 'Arial, Helvetica, sans-serif',
+      fontSize: 120, fontWeight: '700', italic: false, letterSpacing: -2, lineHeight: 1.0,
+      textColor: '#ffffff', bgColor: '#005eb8',
+      width: 800, height: 300, padding: 0, hAlign: 'center', vAlign: 'middle',
+      slant: -12, strokeWidth: 2, strokeColor: '#ffffff', uppercase: true
+    };
+
+    function getValues(){
+      const width = clamp(parseInt(els.width.value||defaults.width,10),1,20000);
+      const height = clamp(parseInt(els.height.value||defaults.height,10),1,20000);
+      const padding = clamp(parseInt(els.padding.value||defaults.padding,10),0,10000);
+      const fontSize = clamp(parseInt(els.fontSize.value||defaults.fontSize,10),1,2000);
+      const letterSpacing = Number(els.letterSpacing.value||0);
+      const lineHeight = Math.max(0.5, Number(els.lineHeight.value||1.1));
+      const slant = Number(els.slant.value||0);
+      const strokeWidth = Math.max(0, Number(els.strokeWidth.value||0));
+
+      let textVal = els.text.value ?? defaults.text;
+      if (els.uppercase.checked) textVal = textVal.toUpperCase();
+
+      return {
+        text: textVal,
+        fontFamily: els.fontFamily.value || defaults.fontFamily,
+        fontSize,
+        fontWeight: els.fontWeight.value || defaults.fontWeight,
+        italic: !!els.italic.checked,
+        letterSpacing,
+        lineHeight,
+        textColor: sanitizeColor(els.textColor.value || defaults.textColor),
+        bgColor: sanitizeColor(els.bgColor.value || defaults.bgColor),
+        width, height, padding,
+        hAlign: els.hAlign.value || defaults.hAlign,
+        vAlign: els.vAlign.value || defaults.vAlign,
+        slant,
+        strokeWidth,
+        strokeColor: sanitizeColor(els.strokeColor.value || defaults.strokeColor)
+      };
+    }
+
+    function buildSVG(){
+      const v = getValues();
+      const viewBox = `0 0 ${v.width} ${v.height}`;
+
+      // Horizontal anchor
+      let x; let textAnchor;
+      if (v.hAlign === 'left'){ x = v.padding; textAnchor='start'; }
+      else if (v.hAlign === 'center'){ x = v.width/2; textAnchor='middle'; }
+      else { x = v.width - v.padding; textAnchor='end'; }
+
+      // Vertical baseline block calculation
+      const lines = (v.text||'').split(/\r?\n/);
+      const count = Math.max(1, lines.length);
+      const adv = v.fontSize * v.lineHeight;
+      const blockHeight = count * v.fontSize + (count-1) * (adv - v.fontSize);
+
+      let yStart;
+      if (v.vAlign==='top') yStart = v.padding + v.fontSize;
+      else if (v.vAlign==='middle') yStart = (v.height - blockHeight)/2 + v.fontSize;
+      else yStart = v.height - v.padding - blockHeight + v.fontSize;
+
+      const fontStyle = v.italic ? 'italic' : 'normal';
+      const safeLines = lines.map(s=>escapeXML(s));
+      const tspans = safeLines.map((line,i)=>{
+        const dy = i===0?0:adv;
+        return `<tspan x="${x}" dy="${dy}">${line||'&#160;'}</tspan>`;
+      }).join('');
+
+      // Use a group to apply the slant via transform
+      const transform = (v.slant && v.slant!==0) ? ` transform="skewX(${v.slant})"` : '';
+
+      // Paint-order ensures stroke sits under the fill
+      const strokeAttrs = v.strokeWidth>0
+        ? ` stroke="${escapeXML(v.strokeColor)}" stroke-width="${v.strokeWidth}" paint-order="stroke fill"`
+        : '';
+
+      const svg =
+`<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXML(v.text)}" width="${v.width}" height="${v.height}" viewBox="${viewBox}">
+  <title>${escapeXML(v.text)}</title>
+  <rect x="0" y="0" width="${v.width}" height="${v.height}" fill="${escapeXML(v.bgColor)}"/>
+  <g${transform}>
+    <text x="${x}" y="${yStart}" fill="${escapeXML(v.textColor)}"
+          font-family="${escapeXML(v.fontFamily)}"
+          font-size="${v.fontSize}"
+          font-weight="${escapeXML(String(v.fontWeight))}"
+          font-style="${fontStyle}"
+          letter-spacing="${v.letterSpacing}"
+          text-anchor="${textAnchor}"${strokeAttrs}>
+      ${tspans}
+    </text>
+  </g>
+</svg>`;
+      return svg;
+    }
+
+    function render(){
+      const svg = buildSVG();
+      els.code.value = svg;
+      els.previewArea.innerHTML = svg;
+    }
+
+    // Wire up
+    document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',render));
+
+    copyBtn.addEventListener('click', async ()=>{
+      try { await navigator.clipboard.writeText(code.value); copyBtn.textContent='Copied!'; }
+      catch { code.select(); document.execCommand('copy'); copyBtn.textContent='Copied!'; }
+      setTimeout(()=>copyBtn.textContent='Copy SVG',1200);
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      const blob = new Blob([code.value],{type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const base = (els.text.value||'svg-text').trim().replace(/\s+/g,'-').toLowerCase().slice(0,80) || 'svg-text';
+      a.href = url; a.download = `${base}.svg`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      text.value = defaults.text;
+      fontFamily.value = defaults.fontFamily;
+      fontSize.value = defaults.fontSize;
+      fontWeight.value = defaults.fontWeight;
+      italic.checked = defaults.italic;
+      letterSpacing.value = defaults.letterSpacing;
+      lineHeight.value = defaults.lineHeight;
+      textColor.value = defaults.textColor;
+      bgColor.value = defaults.bgColor;
+      width.value = defaults.width;
+      height.value = defaults.height;
+      padding.value = defaults.padding;
+      hAlign.value = defaults.hAlign;
+      vAlign.value = defaults.vAlign;
+      slant.value = defaults.slant;
+      strokeWidth.value = defaults.strokeWidth;
+      strokeColor.value = defaults.strokeColor;
+      uppercase.checked = defaults.uppercase;
+      render();
+    });
+
+    nhsPreset.addEventListener('click', ()=>{
+      // An NHS-like visual (approximation with live text)
+      fontFamily.value = 'Arial Black, Arial, Helvetica, sans-serif';
+      fontSize.value = 140;
+      fontWeight.value = '900';
+      italic.checked = true;
+      letterSpacing.value = -3;        // tighter tracking
+      lineHeight.value = 1.0;
+      textColor.value = '#ffffff';
+      bgColor.value = '#005eb8';       // NHS Blue
+      width.value = 800; height.value = 300; padding.value = 0;
+      hAlign.value = 'center'; vAlign.value = 'middle';
+      slant.value = -12;               // forward slant
+      strokeWidth.value = 2;           // subtle “fatter” edge
+      strokeColor.value = '#ffffff';
+      uppercase.checked = true;
+      render();
+    });
+
+    // initial paint
+    render();
+  </script>
+</body>
+</html>
+
