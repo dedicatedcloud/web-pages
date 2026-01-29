@@ -1,2 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
 
-
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --tblr-primary: #f11d46;
+        --tblr-font-sans-serif: "Mulish";
+      }
+      .card-preview {
+        min-height: 340px;
+        border-radius: var(--tblr-border-radius-lg);
+        overflow: hidden;
+        position: relative;
+      }
+      .card-preview__inner {
+        padding: 1.25rem;
+        min-height: 340px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .card-preview__title {
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .card-preview__meta {
+        margin: 0;
+        opacity: 0.9;
+      }
+      .card-preview__msg {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 1.05rem;
+        line-height: 1.45;
+      }
+      .card-preview__img {
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+        border-radius: var(--tblr-border-radius-lg);
+        display: none;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+    </style>
+
+    <title>E-Card Builder</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="page">
+      <header class="navbar navbar-expand-sm navbar-light d-print-none">
+        <div class="container-xl">
+          <a class="navbar-brand navbar-brand-autodark pe-0 pe-md-3" href="./">
+            E-Card Builder
+          </a>
+
+          <div class="navbar-nav flex-row order-md-last">
+            <div class="nav-item">
+              <span class="nav-link d-flex lh-1 text-reset p-0">
+                <span class="avatar avatar-sm bg-primary-lt">EC</span>
+                <div class="d-none d-xl-block ps-2">
+                  <div class="fw-semibold">Static</div>
+                  <div class="mt-1 small text-secondary">Cloudflare Pages ready</div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrapper">
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <h2 class="page-title">Create a shareable e-card</h2>
+                <div class="text-secondary">
+                  No accounts, no backend. Card data is encoded into the URL fragment for privacy.
+                </div>
+              </div>
+              <div class="col-auto ms-auto d-print-none">
+                <a class="btn btn-primary" href="./receive.html" rel="noopener">Open Receiver</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+              <div class="col-12 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Card details</h3>
+                  </div>
+
+                  <div class="card-body">
+                    <form id="cardForm" novalidate>
+                      <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="sender">From</label>
+                          <input
+                            class="form-control"
+                            id="sender"
+                            name="sender"
+                            type="text"
+                            maxlength="80"
+                            autocomplete="name"
+                            placeholder="Your name"
+                          />
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="recipient">To</label>
+                          <input
+                            class="form-control"
+                            id="recipient"
+                            name="recipient"
+                            type="text"
+                            maxlength="80"
+                            autocomplete="name"
+                            placeholder="Recipient name"
+                          />
+                        </div>
+
+                        <div class="col-12">
+                          <label class="form-label" for="message">Message</label>
+                          <textarea
+                            class="form-control"
+                            id="message"
+                            name="message"
+                            rows="6"
+                            maxlength="1200"
+                            placeholder="Write your message…"
+                          ></textarea>
+                          <div class="form-hint">Max 1200 characters (keeps links reliable).</div>
+                        </div>
+
+                        <div class="col-12">
+                          <label class="form-label" for="imageUrl">Image URL (optional)</label>
+                          <input
+                            class="form-control"
+                            id="imageUrl"
+                            name="imageUrl"
+                            type="url"
+                            placeholder="https://example.com/image.jpg"
+                            inputmode="url"
+                            autocomplete="off"
+                          />
+                          <div class="form-hint">
+                            Privacy note: if you use an external image URL, the recipient’s browser will request it.
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="bgColor">Background colour</label>
+                          <input
+                            class="form-control form-control-color"
+                            id="bgColor"
+                            name="bgColor"
+                            type="color"
+                            value="#ffffff"
+                            title="Choose background colour"
+                          />
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                          <label class="form-label" for="bgPattern">Background pattern (optional)</label>
+                          <select class="form-select" id="bgPattern" name="bgPattern">
+                            <option value="">No background pattern</option>
+                            <option value="arches">arches</option>
+                            <option value="az_subtle">az_subtle</option>
+                            <option value="brick_wall">brick_wall</option>
+                            <option value="cubes">cubes</option>
+                            <option value="diagonal-noise">diagonal-noise</option>
+                            <option value="dots">dots</option>
+                            <option value="hexellence">hexellence</option>
+                            <option value="jigsaw">jigsaw</option>
+                            <option value="paper">paper</option>
+                            <option value="subtle_dots">subtle_dots</option>
+                          </select>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-primary" type="button" id="btnBuild">
+                              Build link
+                            </button>
+                            <button class="btn btn-outline-primary" type="button" id="btnCopy" disabled>
+                              Copy link
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" id="btnOpen" disabled>
+                              Open card
+                            </button>
+                            <button class="btn btn-outline-danger ms-auto" type="button" id="btnReset">
+                              Reset
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="card-footer">
+                    <div class="mb-2 fw-semibold">Share link</div>
+                    <div class="input-group">
+                      <input class="form-control mono" id="shareLink" type="text" readonly placeholder="Click Build link…" />
+                      <button class="btn btn-outline-secondary" type="button" id="btnSelect" disabled>Select</button>
+                    </div>
+                    <div class="form-hint mt-2">
+                      Uses <span class="mono">#</span> fragment encoding so card contents are not sent in HTTP requests.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Live preview</h3>
+                    <div class="card-actions">
+                      <span class="status status-primary">Safe rendering</span>
+                    </div>
+                  </div>
+
+                  <div class="card-body">
+                    <div id="previewCard" class="card-preview border">
+                      <div id="previewInner" class="card-preview__inner">
+                        <img id="previewImg" class="card-preview__img" alt="" />
+                        <p class="card-preview__meta" id="previewTo">To: (recipient)</p>
+                        <h3 class="card-preview__title" id="previewFrom">From: (sender)</h3>
+                        <p class="card-preview__msg" id="previewMsg">Your message will appear here.</p>
+                      </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3" role="alert">
+                      The receiver page renders using <strong>textContent</strong> (not innerHTML) to prevent script injection.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row g-3 align-items-center">
+                      <div class="col">
+                        <div class="fw-semibold">Cloudflare Pages</div>
+                        <div class="text-secondary">
+                          This is a static site. For stronger privacy (image proxying, expiry, abuse reports), add a Cloudflare Worker + KV/D1 later.
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <a class="btn btn-outline-secondary" href="./receive.html" rel="noopener">Receiver page</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer footer-transparent d-print-none">
+          <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item">
+                    Static build. No tracking by default.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script>
+    <script>
+      (() => {
+        "use strict";
+
+        const MAX_TEXT = 2000;
+        const MAX_MSG = 1200;
+
+        const els = {
+          form: document.getElementById("cardForm"),
+          sender: document.getElementById("sender"),
+          recipient: document.getElementById("recipient"),
+          message: document.getElementById("message"),
+          imageUrl: document.getElementById("imageUrl"),
+          bgColor: document.getElementById("bgColor"),
+          bgPattern: document.getElementById("bgPattern"),
+
+          previewCard: document.getElementById("previewCard"),
+          previewTo: document.getElementById("previewTo"),
+          previewFrom: document.getElementById("previewFrom"),
+          previewMsg: document.getElementById("previewMsg"),
+          previewImg: document.getElementById("previewImg"),
+
+          shareLink: document.getElementById("shareLink"),
+          btnBuild: document.getElementById("btnBuild"),
+          btnCopy: document.getElementById("btnCopy"),
+          btnOpen: document.getElementById("btnOpen"),
+          btnReset: document.getElementById("btnReset"),
+          btnSelect: document.getElementById("btnSelect"),
+        };
+
+        function safeText(v, maxLen) {
+          if (typeof v !== "string") return "";
+          v = v.replace(/\u0000/g, "").trim();
+          if (v.length > maxLen) v = v.slice(0, maxLen);
+          return v;
+        }
+
+        function isSafeImageUrl(url) {
+          if (!url) return true;
+          try {
+            const u = new URL(url, window.location.origin);
+            if (u.protocol === "https:" || u.protocol === "http:") return true;
+            if (u.protocol === "data:" && /^data:image\//i.test(url)) return true;
+            return false;
+          } catch {
+            return false;
+          }
+        }
+
+        function b64EncodeUnicode(str) {
+          return btoa(encodeURI(str))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/g, "");
+        }
+
+        function buildCardPayload() {
+          const sender = safeText(els.sender.value, 80) || "someone";
+          const recipient = safeText(els.recipient.value, 80);
+          const message = safeText(els.message.value, MAX_MSG);
+          const bgColor = safeText(els.bgColor.value, 32) || "#ffffff";
+          const bgPattern = safeText(els.bgPattern.value, 80);
+          const imageUrlRaw = safeText(els.imageUrl.value, 500);
+
+          const imageUrl = isSafeImageUrl(imageUrlRaw) ? imageUrlRaw : "";
+
+          return {
+            s: sender,
+            r: recipient,
+            m: message,
+            bc: bgColor,
+            bp: bgPattern,
+            i: imageUrl
+          };
+        }
+
+        function updatePreview() {
+          const p = buildCardPayload();
+
+          els.previewTo.textContent = "To: " + (p.r || "(recipient)");
+          els.previewFrom.textContent = "From: " + (p.s || "(sender)");
+          els.previewMsg.textContent = p.m || "Your message will appear here.";
+
+          els.previewCard.style.backgroundColor = p.bc;
+
+          if (!p.bp) {
+            els.previewCard.style.backgroundImage = "";
+          } else {
+            const patternUrl =
+              "https://raw.githubusercontent.com/mike-hearn/transparent-textures/master/patterns/" +
+              encodeURIComponent(p.bp) +
+              ".png";
+            els.previewCard.style.backgroundImage = 'url("' + patternUrl + '")';
+          }
+
+          if (p.i) {
+            els.previewImg.src = p.i;
+            els.previewImg.style.display = "block";
+          } else {
+            els.previewImg.removeAttribute("src");
+            els.previewImg.style.display = "none";
+          }
+        }
+
+        function buildShareLink() {
+          const p = buildCardPayload();
+
+          const params = new URLSearchParams();
+          params.set("s", b64EncodeUnicode(p.s));
+          if (p.r) params.set("r", b64EncodeUnicode(p.r));
+          if (p.m) params.set("m", b64EncodeUnicode(p.m));
+          if (p.bc) params.set("bc", b64EncodeUnicode(p.bc));
+          if (p.bp) params.set("bp", b64EncodeUnicode(p.bp));
+          if (p.i) params.set("i", b64EncodeUnicode(p.i));
+
+          const base = new URL("./receive.html", window.location.href);
+          base.hash = params.toString();
+
+          const url = base.toString();
+
+          if (url.length > 7500) {
+            throw new Error("Link too long. Reduce message length or remove image/pattern.");
+          }
+
+          return url;
+        }
+
+        async function copyToClipboard(text) {
+          if (!text) return false;
+          try {
+            await navigator.clipboard.writeText(text);
+            return true;
+          } catch {
+            return false;
+          }
+        }
+
+        function enableActions(enabled) {
+          els.btnCopy.disabled = !enabled;
+          els.btnOpen.disabled = !enabled;
+          els.btnSelect.disabled = !enabled;
+        }
+
+        function toast(message) {
+          const t = document.createElement("div");
+          t.className = "toast show position-fixed bottom-0 end-0 m-3";
+          t.setAttribute("role", "status");
+          t.setAttribute("aria-live", "polite");
+          t.innerHTML =
+            '<div class="toast-header">' +
+            '<span class="avatar avatar-xs bg-primary-lt me-2"></span>' +
+            '<strong class="me-auto">E-Card</strong>' +
+            '<button type="button" class="btn-close" aria-label="Close"></button>' +
+            "</div>" +
+            '<div class="toast-body"></div>';
+
+          t.querySelector(".toast-body").textContent = message;
+          t.querySelector(".btn-close").addEventListener("click", () => t.remove());
+
+          document.body.appendChild(t);
+          setTimeout(() => t.remove(), 2500);
+        }
+
+        els.form.addEventListener("input", () => {
+          updatePreview();
+          enableActions(false);
+          els.shareLink.value = "";
+        });
+
+        els.btnBuild.addEventListener("click", () => {
+          try {
+            const url = buildShareLink();
+            els.shareLink.value = url;
+            enableActions(true);
+            toast("Link built.");
+          } catch (e) {
+            enableActions(false);
+            els.shareLink.value = "";
+            toast(e && e.message ? e.message : "Could not build link.");
+          }
+        });
+
+        els.btnSelect.addEventListener("click", () => {
+          if (!els.shareLink.value) return;
+          els.shareLink.focus();
+          els.shareLink.select();
+        });
+
+        els.btnCopy.addEventListener("click", async () => {
+          const ok = await copyToClipboard(els.shareLink.value);
+          toast(ok ? "Copied to clipboard." : "Copy failed. Use Select and copy manually.");
+        });
+
+        els.btnOpen.addEventListener("click", () => {
+          if (!els.shareLink.value) return;
+          window.open(els.shareLink.value, "_blank", "noopener,noreferrer");
+        });
+
+        els.btnReset.addEventListener("click", () => {
+          els.form.reset();
+          els.bgColor.value = "#ffffff";
+          updatePreview();
+          enableActions(false);
+          els.shareLink.value = "";
+          toast("Reset.");
+        });
+
+        updatePreview();
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+</body>
+</html>
