@@ -1,2 +1,98 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.modern-timeline {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  padding: 20px;
+		  max-width: 600px;
+		}
+		.tl-item {
+		  position: relative;
+		  padding-left: 40px;
+		  padding-bottom: 40px;
+		}
+		.tl-item::before {
+		  content: "";
+		  position: absolute;
+		  left: 11px;
+		  top: 6px;
+		  bottom: 0;
+		  width: 2px;
+		  background: #e5e7eb;
+		}
+		.tl-item:last-child::before {
+		  display: none;
+		}
+		.tl-dot {
+		  position: absolute;
+		  left: 0;
+		  top: 0;
+		  width: 24px;
+		  height: 24px;
+		  border-radius: 50%;
+		  background: #3b82f6;
+		  border: 4px solid #dbeafe;
+		}
+		.tl-content {
+		  background: #fff;
+		  border: 1px solid #f3f4f6;
+		  padding: 20px;
+		  border-radius: 12px;
+		  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+		  transition: transform 0.2s;
+		}
+		.tl-content:hover {
+		  transform: translateX(5px);
+		  border-color: #dbeafe;
+		}
+		.tl-date {
+		  font-size: 0.85rem;
+		  font-weight: 600;
+		  color: #3b82f6;
+		  margin-bottom: 8px;
+		  text-transform: uppercase;
+		  letter-spacing: 0.5px;
+		}
+		.tl-content h3 {
+		  margin: 0 0 8px 0;
+		  color: #111827;
+		}
+		.tl-content p {
+		  margin: 0;
+		  color: #6b7280;
+		  line-height: 1.6;
+		}
+        </style>
+</head>
+<body>
+<div class="modern-timeline">
+		  <div class="tl-item">
+		    <div class="tl-dot"></div>
+		    <div class="tl-content">
+		      <div class="tl-date">Oct 2026</div>
+		      <h3>Global Launch</h3>
+		      <p>Expanding our services to all regions worldwide.</p>
+		    </div>
+		  </div>
+		  <div class="tl-item">
+		    <div class="tl-dot"></div>
+		    <div class="tl-content">
+		      <div class="tl-date">Jan 2026</div>
+		      <h3>Beta Release</h3>
+		      <p>Initial testing with our early adopter community.</p>
+		    </div>
+		  </div>
+		  <div class="tl-item">
+		    <div class="tl-dot"></div>
+		    <div class="tl-content">
+		      <div class="tl-date">Nov 2025</div>
+		      <h3>Concept</h3>
+		      <p>The beginning of our journey and design phase.</p>
+		    </div>
+		  </div>
+		</div>
+</body>
+</html>
