@@ -1,2 +1,90 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.countdown-timer {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  display: flex;
+		  gap: 15px;
+		}
+		.time-box {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  background: #1f2937;
+		  color: white;
+		  padding: 15px 20px;
+		  border-radius: 12px;
+		  min-width: 80px;
+		  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+		}
+		.num {
+		  font-size: 2rem;
+		  font-weight: 700;
+		  line-height: 1;
+		  margin-bottom: 5px;
+		}
+		.label {
+		  font-size: 0.75rem;
+		  text-transform: uppercase;
+		  letter-spacing: 1px;
+		  opacity: 0.8;
+		}
+        </style>
+</head>
+<body>
+<div class="countdown-timer">
+		  <div class="time-box">
+		    <span class="num" id="days">05</span>
+		    <span class="label">Days</span>
+		  </div>
+		  <div class="time-box">
+		    <span class="num" id="hours">12</span>
+		    <span class="label">Hours</span>
+		  </div>
+		  <div class="time-box">
+		    <span class="num" id="mins">45</span>
+		    <span class="label">Mins</span>
+		  </div>
+		  <div class="time-box">
+		    <span class="num" id="secs">21</span>
+		    <span class="label">Secs</span>
+		  </div>
+		</div>
+		
+		<script>const d = document.getElementById("days");
+		const h = document.getElementById("hours");
+		const m = document.getElementById("mins");
+		const s = document.getElementById("secs");
+		
+		const timer = setInterval(() => {
+		  let days = parseInt(d.innerText);
+		  let hours = parseInt(h.innerText);
+		  let mins = parseInt(m.innerText);
+		  let secs = parseInt(s.innerText);
+		
+		  if (secs > 0) {
+		    secs--;
+		  } else if (mins > 0) {
+		    secs = 59;
+		    mins--;
+		  } else if (hours > 0) {
+		    secs = 59;
+		    mins = 59;
+		    hours--;
+		  } else if (days > 0) {
+		    secs = 59;
+		    mins = 59;
+		    hours = 23;
+		    days--;
+		  }
+		
+		  d.innerText = days < 10 ? "0" + days : days;
+		  h.innerText = hours < 10 ? "0" + hours : hours;
+		  m.innerText = mins < 10 ? "0" + mins : mins;
+		  s.innerText = secs < 10 ? "0" + secs : secs;
+		}, 1000);</script>
+</body>
+</html>
