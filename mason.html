@@ -1,2 +1,63 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.masonry-container {
+		  column-count: 3;
+		  column-gap: 20px;
+		  padding: 20px;
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+		.masonry-item {
+		  break-inside: avoid;
+		  margin-bottom: 20px;
+		  border-radius: 16px;
+		  overflow: hidden;
+		  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+		  transition: transform 0.3s ease;
+		}
+		.masonry-item:hover {
+		  transform: translateY(-5px);
+		}
+		.masonry-item img {
+		  width: 100%;
+		  display: block;
+		  object-fit: cover;
+		}
+		@media (max-width: 900px) {
+		  .masonry-container {
+		    column-count: 2;
+		  }
+		}
+		@media (max-width: 600px) {
+		  .masonry-container {
+		    column-count: 1;
+		  }
+		}
+        </style>
+</head>
+<body>
+<div class="masonry-container">
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x800/2193b0/ffffff?text=Tall+Image" alt="Gallery" loading="lazy">
+		  </div>
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x400/6dd5ed/ffffff?text=Wide+Image" alt="Gallery" loading="lazy">
+		  </div>
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x600/b92b27/ffffff?text=Square" alt="Gallery" loading="lazy">
+		  </div>
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x900/1565C0/ffffff?text=Very+Tall" alt="Gallery" loading="lazy">
+		  </div>
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x500/cc2b5e/ffffff?text=Medium" alt="Gallery" loading="lazy">
+		  </div>
+		  <div class="masonry-item">
+		    <img src="https://placehold.co/600x700/753a88/ffffff?text=Portrait" alt="Gallery" loading="lazy">
+		  </div>
+		</div>
+</body>
+</html>
