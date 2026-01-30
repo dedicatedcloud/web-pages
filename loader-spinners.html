@@ -1,2 +1,391 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+html, body {
+		  background-color: #f0f2f5;
+		}
+		
+		/* ==== Global Showcase Styles ==== */
+		.loader-showcase-container {
+		  display: grid;
+		  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		  gap: 30px;
+		  padding: 20px;
+		  font-family: Arial, sans-serif;
+		  background-color: #f0f2f5;
+		}
+		.loader-wrapper {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  justify-content: center;
+		  background-color: #ffffff;
+		  padding: 20px;
+		  border-radius: 8px;
+		  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+		  min-height: 120px; /* Ensure space for loader and text */
+		}
+		.loader-wrapper p {
+		  margin-top: 15px;
+		  font-size: 0.9em;
+		  color: #555;
+		  text-align: center;
+		}
+		
+		/* ==== Individual Loader Styles ==== */
+		
+		/* Loader 1: Dotted Spinner */
+		.loader-dotted {
+		  width: 48px;
+		  height: 48px;
+		  position: relative;
+		}
+		.loader-dotted::before, .loader-dotted::after {
+		  content: "";
+		  position: absolute;
+		  width: 10px;
+		  height: 10px;
+		  background-color: #3498db;
+		  border-radius: 50%;
+		  opacity: 0;
+		  animation: dotted-spinner 1.8s infinite ease-in-out;
+		}
+		.loader-dotted::before {
+		  left: 50%; top: 0; transform: translateX(-50%);
+		  animation-delay: 0s;
+		}
+		.loader-dotted::after {
+		  left: 0; top: 50%; transform: translateY(-50%);
+		  animation-delay: 0.6s;
+		}
+		@keyframes dotted-spinner {
+		  0%, 100% { opacity: 0; transform: scale(0.5) translate(-50%, -50%); }
+		  50% { opacity: 1; transform: scale(1.2) translate(-50%, -50%); }
+		}
+		/* (Correction for dotted - requires one more element or more complex animation if using only 2) */
+		/* For a simpler 3-dot, typically involves 3 separate divs or a more complex single element keyframe. */
+		/* Let's simplify it to a more common dot spinner using one element and its pseudo-elements for simplicity */
+		.loader-dotted { /* Revised Dotted for simplicity */
+		  width: 10px; height: 10px; border-radius: 50%; background: #3498db; 
+		  box-shadow: -15px -15px 0 2px #3498db, 15px -15px 0 2px #3498db, 15px 15px 0 2px #3498db, -15px 15px 0 2px #3498db;
+		  animation: rotate-dots 1s linear infinite;
+		  position:relative; margin:20px; /* Ensure it is visible */ 
+		}
+		@keyframes rotate-dots { to { transform: rotate(360deg); } }
+		
+		/* Loader 2: Ring Spinner */
+		.loader-ring {
+		  width: 40px;
+		  height: 40px;
+		  border: 5px solid #f3f3f3; /* Light grey */
+		  border-top: 5px solid #3498db; /* Blue */
+		  border-radius: 50%;
+		  animation: ring-spin 1s linear infinite;
+		}
+		@keyframes ring-spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+		
+		/* Loader 3: Pulsing Dot */
+		.loader-pulse {
+		  width: 20px;
+		  height: 20px;
+		  background-color: #e74c3c;
+		  border-radius: 50%;
+		  animation: pulse-dot 1.2s infinite ease-in-out;
+		}
+		@keyframes pulse-dot {
+		  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+		  50% { transform: scale(1.2); opacity: 1; }
+		}
+		
+		/* Loader 4: Bar Bounce */
+		.loader-bar-bounce {
+		  display: flex;
+		  justify-content: space-around;
+		  align-items: flex-end;
+		  width: 50px;
+		  height: 40px;
+		}
+		.loader-bar-bounce div {
+		  width: 8px;
+		  height: 10px;
+		  background-color: #2ecc71;
+		  border-radius: 3px;
+		  animation: bar-bounce 1.2s infinite ease-in-out;
+		}
+		.loader-bar-bounce div:nth-child(2) { animation-delay: -1.0s; }
+		.loader-bar-bounce div:nth-child(3) { animation-delay: -0.8s; }
+		@keyframes bar-bounce {
+		  0%, 40%, 100% { transform: scaleY(0.4); }
+		  20% { transform: scaleY(1.0); }
+		}
+		
+		/* Loader 5: Square Rotate */
+		.loader-square-rotate {
+		  width: 30px;
+		  height: 30px;
+		  background-color: #9b59b6;
+		  animation: square-rotate 1.5s infinite ease-in-out;
+		}
+		@keyframes square-rotate {
+		  0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+		  50% { transform: perspective(120px) rotateX(-180deg) rotateY(0deg); }
+		  100% { transform: perspective(120px) rotateX(-180deg) rotateY(-180deg); }
+		}
+		
+		/* Loader 6: Three Dots Bounce (Ellipsis) */
+		.loader-ellipsis {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		}
+		.loader-ellipsis div {
+		  width: 10px;
+		  height: 10px;
+		  background-color: #f1c40f;
+		  border-radius: 50%;
+		  margin: 0 3px;
+		  animation: ellipsis-bounce 1.4s infinite ease-in-out both;
+		}
+		.loader-ellipsis div:nth-child(1) { animation-delay: -0.32s; }
+		.loader-ellipsis div:nth-child(2) { animation-delay: -0.16s; }
+		.loader-ellipsis div:nth-child(3) { animation-delay: 0s; }
+		.loader-ellipsis div:nth-child(4) { animation-delay: 0.16s; }
+		@keyframes ellipsis-bounce {
+		  0%, 80%, 100% { transform: scale(0.6); opacity: 0.6; }
+		  40% { transform: scale(1.0); opacity: 1; }
+		}
+		
+		/* Loader 7: Dual Circle Spinner */
+		.loader-dual-circle {
+		  width: 40px;
+		  height: 40px;
+		  position: relative;
+		}
+		.loader-dual-circle::after, .loader-dual-circle::before {
+		  content: '';
+		  position: absolute;
+		  border-width: 4px;
+		  border-style: solid;
+		  border-radius: 50%;
+		  animation: ring-spin 1.2s linear infinite;
+		}
+		.loader-dual-circle::after {
+		  width: 40px;
+		  height: 40px;
+		  border-color: #1abc9c transparent #1abc9c transparent;
+		  top: 0; left: 0;
+		}
+		.loader-dual-circle::before {
+		  width: 28px;
+		  height: 28px;
+		  border-color: transparent #e67e22 transparent #e67e22;
+		  top: 6px; left: 6px;
+		  animation-direction: reverse;
+		}
+		
+		/* Loader 8: Gradient Ring Spinner */
+		.loader-gradient-ring {
+		  width: 40px;
+		  height: 40px;
+		  border-radius: 50%;
+		  border: 5px solid transparent;
+		  border-top-color: #3498db;
+		  border-right-color: #2ecc71;
+		  border-bottom-color: #e74c3c;
+		  border-left-color: #f1c40f;
+		  animation: ring-spin 1.5s linear infinite;
+		}
+		
+		/* Loader 9: Line Scale Spinner */
+		.loader-line-scale {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  width: 60px;
+		  height: 30px;
+		}
+		.loader-line-scale div {
+		  background-color: #d35400;
+		  width: 4px;
+		  height: 30px;
+		  border-radius: 2px;
+		  margin: 2px;
+		  animation: line-scale 1s infinite ease-in-out;
+		}
+		.loader-line-scale div:nth-child(1) { animation-delay: -0.9s; }
+		.loader-line-scale div:nth-child(2) { animation-delay: -0.8s; }
+		.loader-line-scale div:nth-child(3) { animation-delay: -0.7s; }
+		.loader-line-scale div:nth-child(4) { animation-delay: -0.6s; }
+		.loader-line-scale div:nth-child(5) { animation-delay: -0.5s; }
+		@keyframes line-scale {
+		  0%, 40%, 100% { transform: scaleY(0.4); }
+		  20% { transform: scaleY(1); }
+		}
+		
+		/* Loader 10: Target Radar Spinner */
+		.loader-target-radar {
+		    width: 40px;
+		    height: 40px;
+		    position: relative;
+		}
+		.loader-target-radar > div {
+		    position: absolute;
+		    border: 2px solid #3498db;
+		    opacity: 1;
+		    border-radius: 50%;
+		    animation: radar-pulse 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+		}
+		.loader-target-radar > div > div {
+		    position: absolute;
+		    top: -6px; left: -6px;
+		    width: 8px; height: 8px;
+		    border-radius: 50%;
+		    background: #3498db;
+		    transform: rotate(45deg); /* To make it look like a crosshair part */
+		}
+		@keyframes radar-pulse {
+		    0% { top: 18px; left: 18px; width: 0; height: 0; opacity: 0; }
+		    50% { opacity: 1; }
+		    100% { top: 0px; left: 0px; width: 36px; height: 36px; opacity: 0; }
+		}
+		
+		/* Loader 11: Simple Dash Spinner */
+		.loader-dash {
+		  width: 40px;
+		  height: 40px;
+		  position: relative;
+		  animation: ring-spin 1.5s linear infinite;
+		}
+		.loader-dash::before {
+		  content: '';
+		  position: absolute;
+		  top: 50%;
+		  left: 0;
+		  width: 15px; /* Length of the dash */
+		  height: 4px; /* Thickness of the dash */
+		  background-color: #8e44ad;
+		  border-radius: 2px;
+		  transform: translateY(-50%);
+		}
+		
+		/* Loader 12: Wave Lines */
+		.loader-wave-lines {
+		    width: 50px;
+		    height: 40px;
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		}
+		.wl-bar {
+		    width: 6px;
+		    height: 100%;
+		    background-color: #16a085;
+		    animation: wave-lines-anim 1.2s ease-in-out infinite;
+		}
+		.wl-bar:nth-child(1) { animation-delay: 0s; }
+		.wl-bar:nth-child(2) { animation-delay: 0.1s; }
+		.wl-bar:nth-child(3) { animation-delay: 0.2s; }
+		.wl-bar:nth-child(4) { animation-delay: 0.3s; }
+		.wl-bar:nth-child(5) { animation-delay: 0.4s; }
+		@keyframes wave-lines-anim {
+		    0%, 100% { transform: scaleY(0.2); background-color: #1abc9c; }
+		    50% { transform: scaleY(1.0); background-color: #16a085; }
+		}
+        </style>
+</head>
+<body>
+<div class="loader-showcase-container">
+		  <!-- Loader 1: Dotted Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-dotted"></div>
+		    <p>Dotted Spinner</p>
+		  </div>
+		
+		  <!-- Loader 2: Ring Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-ring"></div>
+		    <p>Ring Spinner</p>
+		  </div>
+		
+		  <!-- Loader 3: Pulsing Dot -->
+		  <div class="loader-wrapper">
+		    <div class="loader-pulse"></div>
+		    <p>Pulsing Dot</p>
+		  </div>
+		
+		  <!-- Loader 4: Bar Bounce -->
+		  <div class="loader-wrapper">
+		    <div class="loader-bar-bounce">
+		      <div></div><div></div><div></div>
+		    </div>
+		    <p>Bar Bounce</p>
+		  </div>
+		
+		  <!-- Loader 5: Square Rotate -->
+		  <div class="loader-wrapper">
+		    <div class="loader-square-rotate"></div>
+		    <p>Square Rotate</p>
+		  </div>
+		
+		  <!-- Loader 6: Three Dots Bounce (Ellipsis) -->
+		  <div class="loader-wrapper">
+		    <div class="loader-ellipsis">
+		      <div></div><div></div><div></div><div></div>
+		    </div>
+		    <p>Ellipsis Bounce</p>
+		  </div>
+		
+		  <!-- Loader 7: Dual Circle Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-dual-circle"></div>
+		    <p>Dual Circle</p>
+		  </div>
+		
+		  <!-- Loader 8: Gradient Ring Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-gradient-ring"></div>
+		    <p>Gradient Ring</p>
+		  </div>
+		
+		  <!-- Loader 9: Line Scale Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-line-scale">
+		      <div></div><div></div><div></div><div></div><div></div>
+		    </div>
+		    <p>Line Scale</p>
+		  </div>
+		
+		  <!-- Loader 10: Target Radar Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-target-radar">
+		      <div><div></div></div>
+		    </div>
+		    <p>Target Radar</p>
+		  </div>
+		  
+		  <!-- Loader 11: Simple Dash Spinner -->
+		  <div class="loader-wrapper">
+		    <div class="loader-dash"></div>
+		    <p>Dash Spinner</p>
+		  </div>
+		
+		  <!-- Loader 12: Wave Lines -->
+		  <div class="loader-wrapper">
+		    <div class="loader-wave-lines">
+		      <div class="wl-bar"></div>
+		      <div class="wl-bar"></div>
+		      <div class="wl-bar"></div>
+		      <div class="wl-bar"></div>
+		      <div class="wl-bar"></div>
+		    </div>
+		    <p>Wave Lines</p>
+		  </div>
+		</div>
+</body>
+</html>
