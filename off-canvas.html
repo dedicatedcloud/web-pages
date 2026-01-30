@@ -1,2 +1,112 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+html, body {
+		  padding: 20px;
+		}
+		.open-btn {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  padding: 10px 20px;
+		  background: #1f2937;
+		  color: white;
+		  border-radius: 8px;
+		  cursor: pointer;
+		}
+		.drawer-overlay {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  z-index: 999;
+		  visibility: hidden;
+		  transition: visibility 0.3s;
+		}
+		.overlay-close {
+		  position: absolute;
+		  width: 100%;
+		  height: 100%;
+		  background: rgba(0,0,0,0.5);
+		  opacity: 0;
+		  transition: opacity 0.3s;
+		}
+		.drawer-panel {
+		  position: absolute;
+		  top: 0;
+		  right: 0;
+		  width: 300px;
+		  height: 100%;
+		  background: #fff;
+		  transform: translateX(100%);
+		  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		  box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+		  display: flex;
+		  flex-direction: column;
+		}
+		#drawer-toggle:checked ~ .drawer-overlay {
+		  visibility: visible;
+		}
+		#drawer-toggle:checked ~ .drawer-overlay .overlay-close {
+		  opacity: 1;
+		}
+		#drawer-toggle:checked ~ .drawer-overlay .drawer-panel {
+		  transform: translateX(0);
+		}
+		.drawer-header {
+		  padding: 20px;
+		  border-bottom: 1px solid #f3f4f6;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		}
+		.drawer-header h3 {
+		  margin: 0;
+		  color: #1f2937;
+		}
+		.close-btn {
+		  font-size: 1.5rem;
+		  cursor: pointer;
+		  line-height: 1;
+		}
+		.drawer-content {
+		  padding: 20px;
+		  display: flex;
+		  flex-direction: column;
+		  gap: 15px;
+		}
+		.drawer-content a {
+		  text-decoration: none;
+		  color: #4b5563;
+		  font-weight: 500;
+		  transition: color 0.2s;
+		}
+		.drawer-content a:hover {
+		  color: #2563eb;
+		}
+        </style>
+</head>
+<body>
+<input type="checkbox" id="drawer-toggle" hidden="">
+		<label for="drawer-toggle" class="open-btn">Open Menu</label>
+		
+		<div class="drawer-overlay">
+		  <label for="drawer-toggle" class="overlay-close"></label>
+		  <div class="drawer-panel">
+		    <div class="drawer-header">
+		      <h3>Menu</h3>
+		      <label for="drawer-toggle" class="close-btn">×</label>
+		    </div>
+		    <nav class="drawer-content">
+		      <a href="#">Home</a>
+		      <a href="#">Products</a>
+		      <a href="#">About Us</a>
+		      <a href="#">Contact</a>
+		    </nav>
+		  </div>
+		</div>
+</body>
+</html>
