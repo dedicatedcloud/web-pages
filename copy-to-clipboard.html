@@ -1,2 +1,58 @@
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+input#textToCopy {
+		  width: 250px;
+		  padding: 8px;
+		  margin-right: 5px;
+		}
+		button#copyButton {
+		  padding: 8px 12px;
+		  cursor: pointer;
+		}
+		#copyStatus {
+		  margin-top: 5px;
+		  font-size: 0.9em;
+		  color: green;
+		}
+        </style>
+</head>
+<body>
+<input type="text" id="textToCopy" value="Hello, World! This text can be copied.">
+		<button id="copyButton">Copy Text</button>
+		<p id="copyStatus"></p>
+		
+		<script>const copyButton = document.getElementById('copyButton');
+		const textToCopy = document.getElementById('textToCopy');
+		const copyStatus = document.getElementById('copyStatus');
+		
+		copyButton.addEventListener('click', () => {
+		  if (navigator.clipboard && navigator.clipboard.writeText) {
+		    navigator.clipboard.writeText(textToCopy.value)
+		      .then(() => {
+		        copyStatus.textContent = 'Copied to clipboard!';
+		        setTimeout(() => { copyStatus.textContent = ''; }, 2000);
+		      })
+		      .catch(err => {
+		        copyStatus.textContent = 'Failed to copy!';
+		        console.error('Failed to copy text: ', err);
+		        // Fallback for older browsers can be added here if needed
+		      });
+		  } else {
+		    // Fallback for older browsers (less secure, might not always work)
+		    textToCopy.select();
+		    try {
+		      document.execCommand('copy');
+		      copyStatus.textContent = 'Copied to clipboard! (fallback)';
+		    } catch (err) {
+		      copyStatus.textContent = 'Failed to copy! (fallback)';
+		    }
+		    window.getSelection().removeAllRanges(); // Deselect
+		    setTimeout(() => { copyStatus.textContent = ''; }, 2000);
+		  }
+		});</script>
+</body>
+</html>
