@@ -1,2 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.glass-profile {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  width: 320px;
+		  background: #fff;
+		  border-radius: 20px;
+		  overflow: hidden;
+		  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+		  text-align: center;
+		}
+		.gp-banner {
+		  height: 100px;
+		  background: linear-gradient(120deg, #3b82f6, #8b5cf6);
+		}
+		.gp-content {
+		  padding: 0 30px 30px;
+		  position: relative;
+		}
+		.gp-avatar {
+		  width: 100px;
+		  height: 100px;
+		  border-radius: 50%;
+		  border: 5px solid #fff;
+		  margin-top: -50px;
+		  background: #fff;
+		}
+		.glass-profile h2 {
+		  margin: 10px 0 5px;
+		  color: #111827;
+		  font-size: 1.4rem;
+		}
+		.gp-role {
+		  color: #6b7280;
+		  margin: 0 0 20px;
+		  font-size: 0.9rem;
+		}
+		.gp-stats {
+		  display: flex;
+		  justify-content: space-between;
+		  margin-bottom: 25px;
+		  padding: 15px 0;
+		  border-top: 1px solid #f3f4f6;
+		  border-bottom: 1px solid #f3f4f6;
+		}
+		.gp-stats div {
+		  display: flex;
+		  flex-direction: column;
+		}
+		.gp-stats strong {
+		  font-size: 1.1rem;
+		  color: #1f2937;
+		}
+		.gp-stats span {
+		  font-size: 0.8rem;
+		  color: #9ca3af;
+		}
+		.gp-btn {
+		  background: #111827;
+		  color: #fff;
+		  border: none;
+		  padding: 12px 30px;
+		  border-radius: 50px;
+		  font-weight: 600;
+		  cursor: pointer;
+		  transition: transform 0.2s;
+		  width: 100%;
+		}
+		.gp-btn:hover {
+		  transform: translateY(-2px);
+		  background: #000;
+		}
+        </style>
+</head>
+<body>
+<div class="glass-profile">
+		  <div class="gp-banner"></div>
+		  <div class="gp-content">
+		    <img src="https://placehold.co/150x150/3b82f6/ffffff?text=JD" alt="Profile" class="gp-avatar">
+		    <h2>Jane Doe</h2>
+		    <p class="gp-role">Senior UI/UX Designer</p>
+		    <div class="gp-stats">
+		      <div><strong>1.2k</strong><span>Followers</span></div>
+		      <div><strong>850</strong><span>Following</span></div>
+		      <div><strong>42</strong><span>Projects</span></div>
+		    </div>
+		    <button class="gp-btn">Follow Now</button>
+		  </div>
+		</div>
+</body>
+</html>
 
-
+<br><br></br>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.gradient-card {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  position: relative;
+		  width: 300px;
+		  padding: 2px;
+		  border-radius: 16px;
+		  background: linear-gradient(135deg, #3b82f6, #ec4899);
+		  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		}
+		.card-content {
+		  background: #fff;
+		  padding: 30px;
+		  border-radius: 14px;
+		  text-align: center;
+		}
+		.gradient-card h2 {
+		  margin: 0 0 10px 0;
+		  color: #111827;
+		}
+		.gradient-card p {
+		  color: #6b7280;
+		  margin-bottom: 25px;
+		  line-height: 1.5;
+		}
+		.gradient-card button {
+		  background: #111827;
+		  color: #fff;
+		  border: none;
+		  padding: 10px 20px;
+		  border-radius: 50px;
+		  font-weight: 600;
+		  cursor: pointer;
+		  width: 100%;
+		  transition: opacity 0.2s;
+		}
+		.gradient-card button:hover {
+		  opacity: 0.9;
+		}
+        </style>
+</head>
+<body>
+<div class="gradient-card">
+		  <div class="card-content">
+		    <h2>Premium Access</h2>
+		    <p>Unlock exclusive features with our pro plan. Perfect for creators and teams.</p>
+		    <button>Upgrade Now</button>
+		  </div>
+		</div>
+</body>
+</html>
+<br>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.flex-gallery {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  display: flex;
+		  width: 100%;
+		  height: 400px;
+		  gap: 10px;
+		}
+		.panel {
+		  background-size: cover;
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  height: 100%;
+		  border-radius: 20px;
+		  color: #fff;
+		  cursor: pointer;
+		  flex: 1;
+		  transition: flex 0.5s cubic-bezier(0.05, 0.6, 0.4, 0.9);
+		  position: relative;
+		  overflow: hidden;
+		}
+		.panel h3 {
+		  position: absolute;
+		  bottom: 20px;
+		  left: 20px;
+		  margin: 0;
+		  font-size: 1.5rem;
+		  opacity: 0;
+		  transition: opacity 0.3s 0.2s;
+		  background: rgba(0,0,0,0.5);
+		  padding: 5px 15px;
+		  border-radius: 8px;
+		}
+		.panel:hover {
+		  flex: 5;
+		}
+		.panel:hover h3 {
+		  opacity: 1;
+		}
+        </style>
+</head>
+<body>
+<div class="flex-gallery">
+		  <div class="panel active" style="background-image: url('https://placehold.co/600x800/3b82f6/ffffff?text=Explore')">
+		    <h3>Explore</h3>
+		  </div>
+		  <div class="panel" style="background-image: url('https://placehold.co/600x800/ec4899/ffffff?text=Create')">
+		    <h3>Create</h3>
+		  </div>
+		  <div class="panel" style="background-image: url('https://placehold.co/600x800/10b981/ffffff?text=Design')">
+		    <h3>Design</h3>
+		  </div>
+		  <div class="panel" style="background-image: url('https://placehold.co/600x800/f59e0b/ffffff?text=Build')">
+		    <h3>Build</h3>
+		  </div>
+		</div>
+</body>
+</html>
+<br>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+/* Basic body styling for contrast */
+		body {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  min-height: 100vh;
+		  background-color: #222;
+		  margin: 0;
+		}
+		
+		.animated-gradient-text {
+		  font-size: 4rem;
+		  font-family: Arial, sans-serif;
+		  font-weight: bold;
+		  background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+		  background-size: 200% auto;
+		  color: #fff; /* Fallback for browsers that don't support background-clip */
+		  background-clip: text;
+		  -webkit-background-clip: text;
+		  text-fill-color: transparent;
+		  -webkit-text-fill-color: transparent;
+		  animation: gradient-flow 4s linear infinite;
+		  display: inline-block; /* Ensures background-clip works correctly */
+		}
+		
+		@keyframes gradient-flow {
+		  0% {
+		    background-position: 0% center;
+		  }
+		  100% {
+		    background-position: 200% center;
+		  }
+		}
+        </style>
+</head>
+<body>
+<h1 class="animated-gradient-text">Hello World</h1>
+</body>
+</html>
+<br>
+
+<br>
+
+</div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.glass-banner {
+		  position: fixed;
+		  bottom: 20px;
+		  right: 20px;
+		  max-width: 400px;
+		  width: 90%;
+		  background: rgba(255, 255, 255, 0.7);
+		  backdrop-filter: blur(12px);
+		  -webkit-backdrop-filter: blur(12px);
+		  border: 1px solid rgba(255, 255, 255, 0.5);
+		  border-radius: 16px;
+		  padding: 24px;
+		  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  z-index: 9999;
+		  display: flex;
+		}
+		.glass-banner h3 {
+		  margin: 0 0 8px 0;
+		  font-size: 1.1rem;
+		  color: #1f2937;
+		}
+		.glass-banner p {
+		  margin: 0 0 20px 0;
+		  font-size: 0.9rem;
+		  color: #4b5563;
+		  line-height: 1.5;
+		}
+		.glass-actions {
+		  display: flex;
+		  gap: 12px;
+		}
+		.glass-actions button {
+		  flex: 1;
+		  padding: 10px 16px;
+		  border-radius: 8px;
+		  cursor: pointer;
+		  font-weight: 600;
+		  font-size: 0.9rem;
+		  transition: transform 0.2s;
+		}
+		.glass-actions button:hover {
+		  transform: translateY(-2px);
+		}
+		.btn-fill {
+		  background: #2563eb;
+		  color: white;
+		  border: none;
+		  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+		}
+		.btn-outline {
+		  background: transparent;
+		  border: 1px solid #d1d5db;
+		  color: #374151;
+		}
+        </style>
+</head>
+<body>
+<div id="glassCookie" class="glass-banner">
+		  <div class="glass-content">
+		    <h3>We value your privacy</h3>
+		    <p>We use cookies to enhance your browsing experience and analyze our traffic.</p>
+		    <div class="glass-actions">
+		      <button class="btn-outline" onclick="closeBanner()">Decline</button>
+		      <button class="btn-fill" onclick="closeBanner()">Accept All</button>
+		    </div>
+		  </div>
+		</div>
+		
+		<script>function closeBanner() {
+		  document.getElementById("glassCookie").style.display = "none";
+		}</script>
+</body>
+</html>
+<br>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.gradient-card {
+		  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		  position: relative;
+		  width: 300px;
+		  padding: 2px;
+		  border-radius: 16px;
+		  background: linear-gradient(135deg, #3b82f6, #ec4899);
+		  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		}
+		.card-content {
+		  background: #fff;
+		  padding: 30px;
+		  border-radius: 14px;
+		  text-align: center;
+		}
+		.gradient-card h2 {
+		  margin: 0 0 10px 0;
+		  color: #111827;
+		}
+		.gradient-card p {
+		  color: #6b7280;
+		  margin-bottom: 25px;
+		  line-height: 1.5;
+		}
+		.gradient-card button {
+		  background: #111827;
+		  color: #fff;
+		  border: none;
+		  padding: 10px 20px;
+		  border-radius: 50px;
+		  font-weight: 600;
+		  cursor: pointer;
+		  width: 100%;
+		  transition: opacity 0.2s;
+		}
+		.gradient-card button:hover {
+		  opacity: 0.9;
+		}
+        </style>
+</head>
+<body>
+<div class="gradient-card">
+		  <div class="card-content">
+		    <h2>Premium Access</h2>
+		    <p>Unlock exclusive features with our pro plan. Perfect for creators and teams.</p>
+		    <button>Upgrade Now</button>
+		  </div>
+		</div>
+</body>
+</html>
+<div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+        <title>Output</title>
+        <style>
+.typing-container {
+		  display: inline-block;
+		  font-family: monospace;
+		  font-size: 1.5em;
+		  border-right: .15em solid orange; /* The cursor */
+		  white-space: nowrap;
+		  overflow: hidden;
+		  letter-spacing: .15em;
+		  animation: 
+		    typing 3.5s steps(30, end),
+		    blink-caret .75s step-end infinite;
+		}
+		
+		/* The typing effect */
+		@keyframes typing {
+		  from { width: 0 }
+		  to { width: 450px } /* same width as text */
+		}
+		
+		/* The typewriter cursor effect */
+		@keyframes blink-caret {
+		  from, to { border-color: transparent }
+		  50% { border-color: orange; }
+		}
+		
+		/* Basic page styling */
+		body {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  min-height: 100vh;
+		  background-color: #222;
+		  color: #eee;
+		}
+        </style>
+</head>
+<body>
+<div class="typing-container">
+		  <p class="typing-text">This t</p>
+		</div>
+</body>
+</html>
