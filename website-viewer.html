@@ -1,2 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unblocker</title>
 
-
+  <style>
+    :root{
+      --bg:#151515;
+      --fg:#fff;
+      --accent:#b5e853;
+      --link:#63c0f5;
+      --panel:#000;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:16px;
+      background:var(--bg);
+      color:var(--fg);
+      font:18px "Monaco", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      display:flex;
+      justify-content:center;
+    }
+
+    a{color:var(--link)}
+    h1,h2,h3{color:var(--accent); margin:0}
+    p{margin:0 0 8px}
+
+    .wrap{
+      width:min(900px, 100%);
+    }
+
+    header{
+      border-bottom:1px dashed var(--accent);
+      padding-bottom:12px;
+      margin-bottom:16px;
+      text-align:center;
+    }
+
+    .card{
+      border:1px dashed var(--accent);
+      border-radius:10px;
+      padding:16px;
+      background:transparent;
+      margin-bottom:16px;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .input{
+      width:min(725px, 100%);
+      height:44px;
+      font-size:18px;
+      border-radius:8px;
+      border:2px dashed var(--accent);
+      background:var(--panel);
+      color:var(--fg);
+      padding:8px 10px;
+      outline:none;
+    }
+
+    .input::placeholder{color:#8a8a8a}
+
+    .button{
+      width:260px;
+      height:44px;
+      font-size:18px;
+      border-radius:8px;
+      border:2px dashed var(--accent);
+      background:transparent;
+      color:var(--fg);
+      cursor:pointer;
+    }
+
+    .button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    #state{
+      text-align:center;
+      margin-top:12px;
+      font-size:16px;
+    }
+
+    .notice h2{
+      text-align:center;
+      margin-bottom:8px;
+    }
+
+    .viewer{
+      border:2px dashed var(--accent);
+      border-radius:10px;
+      overflow:hidden;
+      background:var(--panel);
+    }
+
+    iframe{
+      display:block;
+      width:100%;
+      height:600px;
+      border:0;
+      background:var(--panel);
+    }
+  </style>
+
+  <script>
+    (() => {
+      let iframe = null;
+
+      const els = {};
+      const allowedProtocols = new Set(['http:', 'https:']);
+
+      function setState(msg) {
+        els.state.textContent = msg;
+      }
+
+      function normalizeUrl(raw) {
+        const input = (raw || '').trim();
+        if (!input) return null;
+
+        // If user pasted "example.com", assume https://
+        const withProto = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(input) ? input : `https://${input}`;
+
+        let u;
+        try { u = new URL(withProto); } catch { return null; }
+
+        if (!allowedProtocols.has(u.protocol)) return null;
+        return u.toString();
+      }
+
+      function ensureIframe() {
+        if (iframe && iframe.isConnected) return iframe;
+
+        iframe = document.createElement('iframe');
+        iframe.id = 'iframe';
+        iframe.loading = 'lazy';
+        iframe.referrerPolicy = 'no-referrer';
+
+        // Sandbox: adjust if you need more capabilities
+        iframe.sandbox = 'allow-forms allow-scripts allow-same-origin allow-popups';
+
+        els.viewer.innerHTML = '';
+        els.viewer.appendChild(iframe);
+        return iframe;
+      }
+
+      function updateButtons() {
+        const url = normalizeUrl(els.url.value);
+        els.openBtn.disabled = !url;
+        els.reloadBtn.disabled = !(iframe && iframe.isConnected);
+      }
+
+      function openUrl() {
+        const url = normalizeUrl(els.url.value);
+        if (!url) {
+          setState('State: invalid URL (must be http/https)');
+          return;
+        }
+
+        const f = ensureIframe();
+        f.src = url;
+
+        setState('State: loading… (some sites block iframes)');
+        els.reloadBtn.disabled = false;
+
+        // Some feedback when it finishes (if it can load)
+        f.onload = () => setState('State: loaded (if blank, the site blocks framing)');
+        f.onerror = () => setState('State: failed to load (blocked or network error)');
+      }
+
+      function reloadFrame() {
+        if (!(iframe && iframe.isConnected)) {
+          alert('There is no current iFrame :(');
+          return;
+        }
+
+        try {
+          iframe.contentWindow.location.reload();
+          setState('State: reloading…');
+        } catch {
+          // Cross-origin restrictions will often prevent this
+          iframe.src = iframe.src;
+          setState('State: reloaded (fallback)');
+        }
+      }
+
+      function resetAll() {
+        els.url.value = '';
+        if (iframe && iframe.isConnected) iframe.remove();
+        iframe = null;
+        els.viewer.innerHTML = '';
+        setState('State: No Input');
+        updateButtons();
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        els.url = document.getElementById('code-textarea');
+        els.openBtn = document.getElementById('open-btn');
+        els.reloadBtn = document.getElementById('reload-btn');
+        els.resetBtn = document.getElementById('reset-btn');
+        els.state = document.getElementById('state');
+        els.viewer = document.getElementById('viewer');
+
+        els.openBtn.addEventListener('click', openUrl);
+        els.reloadBtn.addEventListener('click', reloadFrame);
+        els.resetBtn.addEventListener('click', resetAll);
+
+        els.url.addEventListener('input', updateButtons);
+        els.url.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            openUrl();
+          }
+        });
+
+        updateButtons();
+      });
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Simple Website Viewer</h1>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <input id="code-textarea" class="input" type="url" value="https://" autocomplete="off" inputmode="url">
+        <button id="open-btn" class="button" type="button">Generate Unblocker</button>
+      </div>
+      <div id="state">State: No Input</div>
+    </div>
+
+    <div class="card notice">
+      <h2>WARNING</h2>
+      <p>Many sites will not load in an iframe due to security headers (X-Frame-Options / CSP).</p>
+      <div class="row" style="margin-top:12px;">
+        <button id="reload-btn" class="button" type="button" disabled>Reload Frame</button>
+        <button id="reset-btn" class="button" type="button">Reset</button>
+      </div>
+    </div>
+
+    <div id="viewer" class="viewer" aria-label="Website viewer area"></div>
+  </div>
+</body>
+</html>
+
