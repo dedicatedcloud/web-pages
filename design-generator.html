@@ -1,2 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Design Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --primary: #4361ee;
+    --primary-light: #3f37c9;
+    --secondary: #3a0ca3;
+    --dark: #1a1a2e;
+    --light: #f8f9fa;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --border-radius: 8px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7ff;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.controls-panel {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.preview-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.preview-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.panel-title {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-title i {
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+select, input[type="text"], input[type="color"], input[type="range"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+select:focus, input[type="text"]:focus, input[type="color"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.color-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.preview-form {
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.code-panel {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    position: relative;
+    width: 600px;
+    height: 400px;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.code-panels-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.code-panel-wrapper {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.copy-btn {
+    background-color: #3a3f4b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.copy-btn:hover {
+    background-color: var(--primary);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab.active {
+    border-bottom-color: var(--primary);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.input-preview {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    margin-bottom: 10px;
+}
+
+.input-preview:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+.radio-group, .checkbox-group-preview {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.radio-option, .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.range-preview { 
+    width: 100%;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.input-icon input {
+    padding-left: 35px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.badge-new {
+    background-color: var(--danger);
+}</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Input Design Generator</h1>
+            <p class="subtitle">Create beautiful, customizable form inputs with real-time preview</p>
+        </header>
+
+        <div class="app-container">
+            <div class="controls-panel">
+                <h2 class="panel-title"><i class="fas fa-sliders-h"></i> Customization Options</h2>
+                
+                <div class="form-group">
+                    <label for="input-type">Input Type</label>
+                    <select id="input-type">
+                        <option value="text">Text</option>
+                        <option value="email">Email</option>
+                        <option value="password">Password</option>
+                        <option value="number">Number</option>
+                        <option value="tel">Phone</option>
+                        <option value="url">URL</option>
+                        <option value="date">Date</option>
+                        <option value="time">Time</option>
+                        <option value="datetime-local">Date & Time</option>
+                        <option value="color">Color Picker</option>
+                        <option value="range">Range Slider</option>
+                        <option value="file">File Upload</option>
+                        <option value="textarea">Textarea</option>
+                        <option value="select">Select Dropdown</option>
+                        <option value="radio">Radio Buttons</option>
+                        <option value="checkbox">Checkboxes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-label">Label Text</label>
+                    <input type="text" id="input-label" placeholder="Enter label text" value="Username">
+                </div>
+
+                <div class="form-group">
+                    <label for="placeholder">Placeholder Text</label>
+                    <input type="text" id="placeholder" placeholder="Enter placeholder text" value="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label>Appearance</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="required" checked>
+                        <label for="required">Required</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="disabled">
+                        <label for="disabled">Disabled</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="icon">
+                        <label for="icon">Add Icon <span class="badge badge-new">New</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="border-radius">Border Radius (px)</label>
+                    <input type="range" id="border-radius" min="0" max="20" value="8">
+                </div>
+
+                <div class="form-group color-group">
+                    <div>
+                        <label for="text-color">Text Color</label>
+                        <input type="color" id="text-color" value="#1a1a2e">
+                    </div>
+                    <div>
+                        <label for="bg-color">Background Color</label>
+                        <input type="color" id="bg-color" value="#ffffff">
+                    </div>
+                    <div>
+                        <label for="border-color">Border Color</label>
+                        <input type="color" id="border-color" value="#dddddd">
+                    </div>
+                    <div>
+                        <label for="focus-color">Focus Color</label>
+                        <input type="color" id="focus-color" value="#4361ee">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button id="reset-btn" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button id="generate-btn" class="btn">
+                        <i class="fas fa-magic"></i> Generate
+                    </button>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <!-- Fixed Preview Section -->
+                <div class="preview-section">
+                    <h2 class="panel-title"><i class="fas fa-eye"></i> Live Preview</h2>
+                    <div class="preview-form">
+                        <div class="form-row">
+                            <label for="preview-input">Username</label>
+                            <input type="text" id="preview-input" class="input-preview" placeholder="Enter your username">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Panels (now displayed side by side) -->
+                <div class="code-panels-container">
+                    <!-- HTML Code Panel -->
+                    <div class="code-panel-wrapper">
+                        <h2 class="panel-title"><i class="fab fa-html5"></i> HTML Code</h2>
+                        <div class="code-panel">
+                            <div class="code-header">
+                                <span>HTML</span>
+                                <button class="copy-btn" data-target="html-code">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre id="html-code"><code>&lt;div class="form-group"&gt;
+                &lt;label for="username"&gt;Username&lt;/label&gt;
+                &lt;input type="text" id="username" class="custom-input" placeholder="Enter your username" required&gt;
+            &lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- CSS Code Panel -->
+                    <div class="code-panel-wrapper">
+                        <h2 class="panel-title"><i class="fab fa-css3-alt"></i> CSS Code</h2>
+                        <div class="code-panel">
+                            <div class="code-header">
+                                <span>CSS</span>
+                                <button class="copy-btn" data-target="css-code">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre id="css-code"><code>.custom-input {
+                width: 100%;
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 1rem;
+                color: #1a1a2e;
+                background-color: #ffffff;
+                transition: all 0.3s ease;
+            }
+
+            .custom-input:focus {
+                outline: none;
+                border-color: #4361ee;
+                box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            }</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Code copied to clipboard!</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const inputType = document.getElementById('input-type');
+    const inputLabel = document.getElementById('input-label');
+    const placeholder = document.getElementById('placeholder');
+    const required = document.getElementById('required');
+    const disabled = document.getElementById('disabled');
+    const addIcon = document.getElementById('icon');
+    const borderRadius = document.getElementById('border-radius');
+    const textColor = document.getElementById('text-color');
+    const bgColor = document.getElementById('bg-color');
+    const borderColor = document.getElementById('border-color');
+    const focusColor = document.getElementById('focus-color');
+    const resetBtn = document.getElementById('reset-btn');
+    const generateBtn = document.getElementById('generate-btn');
+    const previewInput = document.getElementById('preview-input');
+    const previewForm = document.querySelector('.preview-form');
+    const htmlCode = document.getElementById('html-code');
+    const cssCode = document.getElementById('css-code');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    const toast = document.getElementById('toast');
+
+    // Sample options for select, radio, and checkbox inputs
+    const sampleOptions = [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+        { value: 'option3', label: 'Option 3' }
+    ];
+
+    // Initialize the app
+    function init() {
+        updatePreview();
+        setupEventListeners();
+    }
+
+    // Set up event listeners
+    function setupEventListeners() {
+        // Input customization controls
+        const controls = [inputType, inputLabel, placeholder, required, disabled, addIcon, 
+                        borderRadius, textColor, bgColor, borderColor, focusColor];
+        
+        controls.forEach(control => {
+            control.addEventListener('input', updatePreview);
+            control.addEventListener('change', updatePreview);
+        });
+
+        // Reset button
+        resetBtn.addEventListener('click', resetControls);
+
+        // Generate button
+        generateBtn.addEventListener('click', generateCode);
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', switchTab);
+        });
+
+        // Copy buttons
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', copyToClipboard);
+        });
+    }
+
+    // Update the preview based on current settings
+    function updatePreview() {
+        const type = inputType.value;
+        const labelText = inputLabel.value || 'Label';
+        const placeholderText = placeholder.value || '';
+        const isRequired = required.checked;
+        const isDisabled = disabled.checked;
+        const hasIcon = addIcon.checked;
+        const radius = borderRadius.value + 'px';
+        const txtColor = textColor.value;
+        const bg = bgColor.value;
+        const border = borderColor.value;
+        const focus = focusColor.value;
+
+        // Update the preview input
+        let inputHtml = '';
+        let labelHtml = `<label for="preview-input">${labelText}</label>`;
+
+        if (type === 'radio') {
+            inputHtml = `<div class="radio-group">`;
+            sampleOptions.forEach((option, index) => {
+                inputHtml += `
+                    <div class="radio-option">
+                        <input type="radio" id="radio-${index}" name="radio-group" 
+                            ${isDisabled ? 'disabled' : ''} ${isRequired ? 'required' : ''}>
+                        <label for="radio-${index}">${option.label}</label>
+                    </div>
+                `;
+            });
+            inputHtml += `</div>`;
+        } 
+        else if (type === 'checkbox') {
+            inputHtml = `<div class="checkbox-group-preview">`;
+            sampleOptions.forEach((option, index) => {
+                inputHtml += `
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="checkbox-${index}" 
+                            ${isDisabled ? 'disabled' : ''} ${isRequired ? 'required' : ''}>
+                        <label for="checkbox-${index}">${option.label}</label>
+                    </div>
+                `;
+            });
+            inputHtml += `</div>`;
+        } 
+        else if (type === 'select') {
+            inputHtml = `
+                <select id="preview-input" class="input-preview" 
+                    ${isDisabled ? 'disabled' : ''} ${isRequired ? 'required' : ''}>
+                    <option value="" disabled selected>${placeholderText || 'Select an option'}</option>
+                    ${sampleOptions.map(option => 
+                        `<option value="${option.value}">${option.label}</option>`
+                    ).join('')}
+                </select>
+            `;
+        } 
+        else if (type === 'textarea') {
+            inputHtml = `
+                <textarea id="preview-input" class="input-preview" 
+                    placeholder="${placeholderText}" 
+                    ${isDisabled ? 'disabled' : ''} ${isRequired ? 'required' : ''}
+                ></textarea>
+            `;
+        } 
+        else {
+            let inputElement = `
+                <input type="${type}" id="preview-input" class="input-preview" 
+                    placeholder="${placeholderText}" 
+                    ${isDisabled ? 'disabled' : ''} ${isRequired ? 'required' : ''}>
+            `;
+
+            if (hasIcon) {
+                const icon = type === 'password' ? 'fa-lock' : 
+                            type === 'email' ? 'fa-envelope' : 
+                            type === 'number' ? 'fa-hashtag' : 
+                            type === 'tel' ? 'fa-phone' : 
+                            type === 'date' ? 'fa-calendar' : 
+                            type === 'time' ? 'fa-clock' : 'fa-user';
+                
+                inputElement = `
+                    <div class="input-icon">
+                        <i class="fas ${icon}"></i>
+                        ${inputElement}
+                    </div>
+                `;
+            }
+
+            inputHtml = inputElement;
+        }
+
+        // Update the preview form
+        previewForm.innerHTML = `
+            <div class="form-row">
+                ${labelHtml}
+                ${inputHtml}
+            </div>
+        `;
+
+        // Apply styles to the preview input
+        const input = document.getElementById('preview-input') || 
+                        document.querySelector('.input-preview') || 
+                        document.querySelector('.radio-group input') || 
+                        document.querySelector('.checkbox-group-preview input');
+
+        if (input) {
+            const inputs = document.querySelectorAll('.input-preview, .radio-group input, .checkbox-group-preview input, select.input-preview, textarea.input-preview');
+            
+            inputs.forEach(inp => {
+                inp.style.borderRadius = radius;
+                inp.style.color = txtColor;
+                inp.style.backgroundColor = bg;
+                inp.style.borderColor = border;
+            });
+
+            // For non-radio/checkbox inputs, add focus style
+            if (type !== 'radio' && type !== 'checkbox') {
+                const style = document.createElement('style');
+                style.id = 'dynamic-styles';
+                style.textContent = `
+                    .input-preview:focus {
+                        border-color: ${focus} !important;
+                        box-shadow: 0 0 0 2px ${hexToRgba(focus, 0.2)} !important;
+                    }
+                `;
+                
+                // Remove old style if exists
+                const oldStyle = document.getElementById('dynamic-styles');
+                if (oldStyle) {
+                    oldStyle.remove();
+                }
+                
+                document.head.appendChild(style);
+            }
+        }
+
+        // Generate code preview
+        generateCodePreview();
+    }
+
+    // Generate HTML and CSS code preview
+    function generateCodePreview() {
+        const type = inputType.value;
+        const labelText = inputLabel.value || 'Label';
+        const placeholderText = placeholder.value || '';
+        const isRequired = required.checked;
+        const isDisabled = disabled.checked;
+        const hasIcon = addIcon.checked;
+        const radius = borderRadius.value + 'px';
+        const txtColor = textColor.value;
+        const bg = bgColor.value;
+        const border = borderColor.value;
+        const focus = focusColor.value;
+
+        // Generate HTML code
+        let html = '';
+        let css = '';
+
+        if (type === 'radio') {
+            html = `<div class="form-group">\n    <label>${labelText}</label>\n    <div class="radio-group">`;
+            sampleOptions.forEach((option, index) => {
+                html += `\n        <div class="radio-option">\n            <input type="radio" id="radio-${index}" name="radio-group" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}>\n            <label for="radio-${index}">${option.label}</label>\n        </div>`;
+            });
+            html += `\n    </div>\n</div>`;
+
+            css = `.radio-group {
+display: flex;
+gap: 15px;
+margin-top: 8px;
+}
+
+.radio-option {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.radio-option input[type="radio"] {
+accent-color: ${focus};
+width: 16px;
+height: 16px;
+}`;
+        } 
+        else if (type === 'checkbox') {
+            html = `<div class="form-group">\n    <label>${labelText}</label>\n    <div class="checkbox-group">`;
+            sampleOptions.forEach((option, index) => {
+                html += `\n        <div class="checkbox-option">\n            <input type="checkbox" id="checkbox-${index}" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}>\n            <label for="checkbox-${index}">${option.label}</label>\n        </div>`;
+            });
+            html += `\n    </div>\n</div>`;
+
+            css = `.checkbox-group {
+display: flex;
+gap: 15px;
+margin-top: 8px;
+}
+
+.checkbox-option {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.checkbox-option input[type="checkbox"] {
+accent-color: ${focus};
+width: 16px;
+height: 16px;
+}`;
+        } 
+        else if (type === 'select') {
+            html = `<div class="form-group">\n    <label for="custom-select">${labelText}</label>\n    <select id="custom-select" class="custom-input" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}>\n        <option value="" disabled selected>${placeholderText || 'Select an option'}</option>`;
+            sampleOptions.forEach(option => {
+                html += `\n        <option value="${option.value}">${option.label}</option>`;
+            });
+            html += `\n    </select>\n</div>`;
+
+            css = `.custom-input {
+width: 100%;
+padding: 12px 15px;
+border: 1px solid ${border};
+border-radius: ${radius};
+font-size: 1rem;
+color: ${txtColor};
+background-color: ${bg};
+transition: all 0.3s ease;
+appearance: none;
+background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-position: right 10px center;
+background-size: 1em;
+}
+
+.custom-input:focus {
+outline: none;
+border-color: ${focus};
+box-shadow: 0 0 0 2px ${hexToRgba(focus, 0.2)};
+}`;
+        } 
+        else if (type === 'textarea') {
+            html = `<div class="form-group">\n    <label for="custom-textarea">${labelText}</label>\n    <textarea id="custom-textarea" class="custom-input" placeholder="${placeholderText}" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}></textarea>\n</div>`;
+
+            css = `.custom-input {
+width: 100%;
+padding: 12px 15px;
+border: 1px solid ${border};
+border-radius: ${radius};
+font-size: 1rem;
+color: ${txtColor};
+background-color: ${bg};
+transition: all 0.3s ease;
+min-height: 100px;
+resize: vertical;
+}
+
+.custom-input:focus {
+outline: none;
+border-color: ${focus};
+box-shadow: 0 0 0 2px ${hexToRgba(focus, 0.2)};
+}`;
+        } 
+        else {
+            let inputHtml = '';
+            let iconCss = '';
+
+            if (hasIcon) {
+                const icon = type === 'password' ? 'fa-lock' : 
+                                type === 'email' ? 'fa-envelope' : 
+                                type === 'number' ? 'fa-hashtag' : 
+                                type === 'tel' ? 'fa-phone' : 
+                                type === 'date' ? 'fa-calendar' : 
+                                type === 'time' ? 'fa-clock' : 'fa-user';
+
+                inputHtml = `<div class="input-icon">\n    <i class="fas ${icon}"></i>\n    <input type="${type}" id="custom-input" class="custom-input" placeholder="${placeholderText}" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}>\n</div>`;
+
+                iconCss = `.input-icon {
+position: relative;
+}
+
+.input-icon i {
+position: absolute;
+left: 10px;
+top: 50%;
+transform: translateY(-50%);
+color: #6c757d;
+}
+
+.input-icon .custom-input {
+padding-left: 35px;
+}`;
+            } else {
+                inputHtml = `<input type="${type}" id="custom-input" class="custom-input" placeholder="${placeholderText}" ${isRequired ? 'required' : ''}${isDisabled ? ' disabled' : ''}>`;
+            }
+
+            html = `<div class="form-group">\n    <label for="custom-input">${labelText}</label>\n    ${inputHtml}\n</div>`;
+
+            css = `.custom-input {
+width: 100%;
+padding: 12px 15px;
+border: 1px solid ${border};
+border-radius: ${radius};
+font-size: 1rem;
+color: ${txtColor};
+background-color: ${bg};
+transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+outline: none;
+border-color: ${focus};
+box-shadow: 0 0 0 2px ${hexToRgba(focus, 0.2)};
+}
+
+${iconCss}`;
+        }
+
+        // Update code panels
+        htmlCode.innerHTML = highlightSyntax(html, 'html');
+        cssCode.innerHTML = highlightSyntax(css, 'css');
+    }
+
+    // Generate final code
+    function generateCode() {
+        generateCodePreview();
+        switchTab({ currentTarget: document.querySelector('.tab[data-tab="html"]') });
+        showToast('Code generated! Switch between tabs to view HTML/CSS.');
+    }
+
+    // Reset all controls to default
+    function resetControls() {
+        inputType.value = 'text';
+        inputLabel.value = 'Username';
+        placeholder.value = 'Enter your username';
+        required.checked = true;
+        disabled.checked = false;
+        addIcon.checked = false;
+        borderRadius.value = 8;
+        textColor.value = '#1a1a2e';
+        bgColor.value = '#ffffff';
+        borderColor.value = '#dddddd';
+        focusColor.value = '#4361ee';
+
+        updatePreview();
+        showToast('Controls reset to default values');
+    }
+
+    // Switch between tabs
+    function switchTab(e) {
+        const tab = e.currentTarget;
+        const tabId = tab.getAttribute('data-tab');
+
+        // Update active tab
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Update active content
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+            if (content.id === `${tabId}-tab`) {
+                content.classList.add('active');
+            }
+        });
+    }
+
+    // Copy code to clipboard
+    function copyToClipboard(e) {
+        const targetId = e.currentTarget.getAttribute('data-target');
+        const codeElement = document.getElementById(targetId);
+        const text = codeElement.textContent;
+
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Code copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+
+    // Show toast notification
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Helper function to convert hex to rgba
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // Simple syntax highlighting
+    function highlightSyntax(code, language) {
+        if (language === 'html') {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"(.*?)"/g, '&quot;<span class="code-value">$1</span>&quot;')
+                .replace(/\b(class|id|for|type|placeholder|required|disabled)\b/g, '<span class="code-attr">$1</span>')
+                .replace(/\b(div|label|input|select|option|textarea)\b/g, '<span class="code-tag">&lt;$1&gt;</span>');
+        } else if (language === 'css') {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/([^{}]+)(?={)/g, '<span class="code-selector">$1</span>')
+                .replace(/([a-zA-Z-]+)(?=:)/g, '<span class="code-property">$1</span>')
+                .replace(/(:)(.*?)(?=;)/g, '$1<span class="code-value">$2</span>');
+        }
+        return code;
+    }
+
+    // Initialize the app
+    init();
+});</script>
+</body>
+
