@@ -1,2 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Maker | Learn Better</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --primary: #4361ee;
+    --primary-light: #4895ef;
+    --secondary: #3f37c9;
+    --dark: #1a1a2e;
+    --light: #f8f9fa;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f7fb;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #d31667;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.flashcard-form {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.flashcards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.flashcard {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.flashcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.flashcard-content {
+    padding: 1.5rem;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.flashcard-front, .flashcard-back {
+    transition: opacity 0.3s ease;
+}
+
+.flashcard-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.5rem;
+    opacity: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.flashcard.flipped .flashcard-front {
+    opacity: 0;
+}
+
+.flashcard.flipped .flashcard-back {
+    opacity: 1;
+}
+
+.flashcard-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.flashcard-body {
+    color: #555;
+}
+
+.flashcard-actions {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.flashcard-actions button {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.flashcard-actions button:hover {
+    color: var(--primary);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    grid-column: 1 / -1;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--primary-light);
+    margin-bottom: 1rem;
+}
+
+.empty-state button i {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.empty-state p {
+    color: #777;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #e0e7ff;
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.study-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.study-mode.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.study-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 600px;
+    min-height: 400px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.study-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.study-card-front, .study-card-back {
+    position: absolute;
+    backface-visibility: hidden;
+    padding: 2rem;
+    text-align: center;
+}
+
+.study-card-back {
+    transform: rotateY(180deg);
+}
+
+.study-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+}
+
+.study-card p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.study-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.close-study {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+    cursor: pointer;
+}
+
+.close-study:hover {
+    color: var(--danger);
+}
+
+.progress-indicator {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.search-bar {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+}
+
+.search-bar button {
+    padding: 0 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.tag-filter {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tag-filter button {
+    padding: 0.5rem 1rem;
+    background-color: #e0e7ff;
+    color: var(--primary);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.tag-filter button.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.tag-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tag-input input {
+    flex: 1;
+    min-width: 100px;
+}
+
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background-color: #e0e7ff;
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+.tag-pill button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    margin-left: 0.5rem;
+    cursor: pointer;
+    font-size: 0.6rem;
+}
+
+.actions-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.stats {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.import-export {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--dark);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 1001;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    background-color: var(--success);
+}
+
+.toast.error {
+    background-color: var(--danger);
+}</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-layer-group"></i>
+                <span>Flashcard Maker</span>
+            </div>
+            <button id="studyAllBtn" class="btn btn-primary">
+                <i class="fas fa-graduation-cap"></i> Study All
+            </button>
+        </header>
+
+        <div class="main-content">
+            <div class="flashcard-form">
+                <h2>Create New Flashcard</h2>
+                <div class="form-group">
+                    <label for="flashcardTitle">Title</label>
+                    <input type="text" id="flashcardTitle" class="form-control" placeholder="Enter title...">
+                </div>
+                <div class="form-group">
+                    <label for="flashcardFront">Front Content</label>
+                    <textarea id="flashcardFront" class="form-control" placeholder="Enter front content..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="flashcardBack">Back Content</label>
+                    <textarea id="flashcardBack" class="form-control" placeholder="Enter back content..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="flashcardTags">Tags (comma separated)</label>
+                    <input type="text" id="flashcardTags" class="form-control" placeholder="e.g., math, science, history">
+                </div>
+                <div class="form-actions">
+                    <button id="saveFlashcardBtn" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button id="clearFormBtn" class="btn btn-outline">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="flashcards-section">
+                <div class="actions-bar">
+                    <div class="stats" id="statsDisplay">0 flashcards</div>
+                    <div class="import-export">
+                        <button id="importBtn" class="btn btn-outline" style="padding: 0.5rem;">
+                            <i class="fas fa-file-import"></i>
+                        </button>
+                        <button id="exportBtn" class="btn btn-outline" style="padding: 0.5rem;">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                        <input type="file" id="importFile" style="display: none;" accept=".json">
+                    </div>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search flashcards...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+
+                <div class="tag-filter" id="tagFilter">
+                    <!-- Tags will be added here dynamically -->
+                </div>
+
+                <div class="flashcards-container" id="flashcardsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>No Flashcards Yet</h3>
+                        <p>Create your first flashcard to get started!</p>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Flashcard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Mode Modal -->
+    <div class="study-mode" id="studyMode">
+        <div class="study-card" id="studyCard">
+            <button class="close-study" id="closeStudy">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="progress-indicator" id="progressIndicator">1/10</div>
+            <div class="study-card-front">
+                <h2 id="studyFrontTitle">Front Title</h2>
+                <p id="studyFrontContent">Front content goes here...</p>
+                <button class="btn btn-primary" id="flipStudyCardBtn">
+                    <i class="fas fa-redo"></i> Flip Card
+                </button>
+            </div>
+            <div class="study-card-back">
+                <h2>Answer</h2>
+                <p id="studyBackContent">Back content goes here...</p>
+                <div class="study-nav">
+                    <button class="btn btn-outline" id="prevCardBtn">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <div>
+                        <button class="btn btn-primary" id="nextCardBtn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const flashcardsContainer = document.getElementById('flashcardsContainer');
+    const saveFlashcardBtn = document.getElementById('saveFlashcardBtn');
+    const clearFormBtn = document.getElementById('clearFormBtn');
+    const studyAllBtn = document.getElementById('studyAllBtn');
+    const studyMode = document.getElementById('studyMode');
+    const closeStudyBtn = document.getElementById('closeStudy');
+    const fliStudyCardBtn = document.getElementById('flipStudyCardBtn');
+    const prevCardBtn = document.getElementById('prevCardBtn');
+    const nextCardBtn = document.getElementById('nextCardBtn');
+    const studyCard = document.getElementById('studyCard');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const tagFilter = document.getElementById('tagFilter');
+    const importBtn = document.getElementById('importBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const importFile = document.getElementById('importFile');
+    const statsDisplay = document.getElementById('statsDisplay');
+    const toast = document.getElementById('toast');
+
+    // State
+    let flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+    let currentStudyIndex = 0;
+    let studyFlashcards = [];
+    let activeTagFilter = null;
+    let currentSearchTerm = '';
+
+    // Initialize
+    updateFlashcardsDisplay();
+    updateStats();
+    updateTagFilter();
+
+    // Event Listeners
+    saveFlashcardBtn.addEventListener('click', saveFlashcard);
+    clearFormBtn.addEventListener('click', clearForm);
+    studyAllBtn.addEventListener('click', startStudySession);
+    closeStudyBtn.addEventListener('click', closeStudySession);
+    fliStudyCardBtn.addEventListener('click', flipStudyCard);
+    prevCardBtn.addEventListener('click', showPrevCard);
+    nextCardBtn.addEventListener('click', showNextCard);
+    searchBtn.addEventListener('click', searchFlashcards);
+    searchInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') searchFlashcards();
+    });
+    importBtn.addEventListener('click', () => importFile.click());
+    exportBtn.addEventListener('click', exportFlashcards);
+    importFile.addEventListener('change', importFlashcards);
+
+    // Functions
+    function saveFlashcard() {
+        const title = document.getElementById('flashcardTitle').value.trim();
+        const front = document.getElementById('flashcardFront').value.trim();
+        const back = document.getElementById('flashcardBack').value.trim();
+        const tags = document.getElementById('flashcardTags').value.trim();
+
+        if (!title || !front || !back) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+
+        const newFlashcard = {
+            id: Date.now().toString(),
+            title,
+            front,
+            back,
+            tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+            createdAt: new Date().toISOString()
+        };
+
+        flashcards.push(newFlashcard);
+        saveToLocalStorage();
+        updateFlashcardsDisplay();
+        updateTagFilter();
+        clearForm();
+        showToast('Flashcard saved successfully!', 'success');
+    }
+
+    function clearForm() {
+        document.getElementById('flashcardTitle').value = '';
+        document.getElementById('flashcardFront').value = '';
+        document.getElementById('flashcardBack').value = '';
+        document.getElementById('flashcardTags').value = '';
+    }
+
+    function saveToLocalStorage() {
+        localStorage.setItem('flashcards', JSON.stringify(flashcards));
+        updateStats();
+    }
+
+    function updateFlashcardsDisplay() {
+        let filteredFlashcards = [...flashcards];
+
+        // Apply search filter
+        if (currentSearchTerm) {
+            const searchTerm = currentSearchTerm.toLowerCase();
+            filteredFlashcards = filteredFlashcards.filter(card => 
+                card.title.toLowerCase().includes(searchTerm) || 
+                card.front.toLowerCase().includes(searchTerm) || 
+                card.back.toLowerCase().includes(searchTerm) ||
+                card.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+        }
+
+        // Apply tag filter
+        if (activeTagFilter) {
+            filteredFlashcards = filteredFlashcards.filter(card => 
+                card.tags.includes(activeTagFilter)
+            );
+        }
+
+        if (filteredFlashcards.length === 0) {
+            flashcardsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>No Flashcards Found</h3>
+                    <p>Try adjusting your search or create a new flashcard.</p>
+                    <button class="btn btn-primary" onclick="clearFilters()">
+                        <i class="fas fa-times"></i> Clear Filters
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        flashcardsContainer.innerHTML = '';
+        filteredFlashcards.forEach(card => {
+            const flashcardElement = document.createElement('div');
+            flashcardElement.className = 'flashcard';
+            flashcardElement.dataset.id = card.id;
+            
+            flashcardElement.innerHTML = `
+                <div class="flashcard-content">
+                    <div class="flashcard-front">
+                        <h3 class="flashcard-title">${card.title}</h3>
+                        <p class="flashcard-body">${card.front}</p>
+                        ${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 class="flashcard-title">${card.title}</h3>
+                        <p class="flashcard-body">${card.back}</p>
+                        ${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="flashcard-actions">
+                        <button class="edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                        <button class="study-btn" title="Study"><i class="fas fa-graduation-cap"></i></button>
+                    </div>
+                </div>
+            `;
+            
+            flashcardsContainer.appendChild(flashcardElement);
+
+            // Add event listeners to the new card
+            const editBtn = flashcardElement.querySelector('.edit-btn');
+            const deleteBtn = flashcardElement.querySelector('.delete-btn');
+            const studyBtn = flashcardElement.querySelector('.study-btn');
+
+            flashcardElement.addEventListener('click', function(e) {
+                if (!editBtn.contains(e.target) && !deleteBtn.contains(e.target)) {
+                    this.classList.toggle('flipped');
+                }
+            });
+
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                editFlashcard(card.id);
+            });
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteFlashcard(card.id);
+            });
+
+            studyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startStudySession([card.id]);
+            });
+        });
+    }
+
+    function editFlashcard(id) {
+        const cardIndex = flashcards.findIndex(card => card.id === id);
+        if (cardIndex === -1) return;
+
+        const card = flashcards[cardIndex];
+        document.getElementById('flashcardTitle').value = card.title;
+        document.getElementById('flashcardFront').value = card.front;
+        document.getElementById('flashcardBack').value = card.back;
+        document.getElementById('flashcardTags').value = card.tags.join(', ');
+
+        // Remove the card being edited
+        flashcards.splice(cardIndex, 1);
+        saveToLocalStorage();
+        updateFlashcardsDisplay();
+        updateTagFilter();
+
+        // Scroll to form
+        document.querySelector('.flashcard-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteFlashcard(id) {
+        if (confirm('Are you sure you want to delete this flashcard?')) {
+            flashcards = flashcards.filter(card => card.id !== id);
+            saveToLocalStorage();
+            updateFlashcardsDisplay();
+            updateTagFilter();
+            showToast('Flashcard deleted', 'success');
+        }
+    }
+
+    function startStudySession(ids = null) {
+        if (flashcards.length === 0) {
+            showToast('No flashcards to study', 'error');
+            return;
+        }
+
+        // Prepare cards for study session
+        studyFlashcards = ids 
+            ? flashcards.filter(card => ids.includes(card.id))
+            : [...flashcards];
+
+        if (studyFlashcards.length === 0) {
+            showToast('No flashcards match your selection', 'error');
+            return;
+        }
+
+        // Shuffle cards for study session
+        studyFlashcards = shuffleArray(studyFlashcards);
+        currentStudyIndex = 0;
+
+        // Start study session
+        studyMode.classList.add('active');
+        updateStudyCard();
+    }
+
+    function closeStudySession() {
+        studyMode.classList.remove('active');
+        studyCard.classList.remove('flipped');
+    }
+
+    function flipStudyCard() {
+        studyCard.classList.toggle('flipped');
+    }
+
+    function updateStudyCard() {
+        const card = studyFlashcards[currentStudyIndex];
+        document.getElementById('studyFrontTitle').textContent = card.title;
+        document.getElementById('studyFrontContent').textContent = card.front;
+        document.getElementById('studyBackContent').textContent = card.back;
+        document.getElementById('progressIndicator').textContent = 
+            `${currentStudyIndex + 1}/${studyFlashcards.length}`;
+    }
+
+    function showPrevCard() {
+        if (currentStudyIndex > 0) {
+            currentStudyIndex--;
+            studyCard.classList.remove('flipped');
+            updateStudyCard();
+        }
+    }
+
+    function showNextCard() {
+        if (currentStudyIndex < studyFlashcards.length - 1) {
+            currentStudyIndex++;
+            studyCard.classList.remove('flipped');
+            updateStudyCard();
+        } else {
+            closeStudySession();
+            showToast('Study session completed!', 'success');
+        }
+    }
+
+    function searchFlashcards() {
+        currentSearchTerm = searchInput.value.trim();
+        updateFlashcardsDisplay();
+    }
+
+    function updateTagFilter() {
+        // Get all unique tags
+        const allTags = new Set();
+        flashcards.forEach(card => {
+            card.tags.forEach(tag => allTags.add(tag));
+        });
+
+        tagFilter.innerHTML = '';
+
+        // Add "All" button
+        const allButton = document.createElement('button');
+        allButton.textContent = 'All';
+        allButton.className = !activeTagFilter ? 'active' : '';
+        allButton.addEventListener('click', () => {
+            activeTagFilter = null;
+            updateTagFilterButtons();
+            updateFlashcardsDisplay();
+        });
+        tagFilter.appendChild(allButton);
+
+        // Add tag buttons
+        Array.from(allTags).sort().forEach(tag => {
+            const tagButton = document.createElement('button');
+            tagButton.textContent = tag;
+            tagButton.className = activeTagFilter === tag ? 'active' : '';
+            tagButton.addEventListener('click', () => {
+                activeTagFilter = activeTagFilter === tag ? null : tag;
+                updateTagFilterButtons();
+                updateFlashcardsDisplay();
+            });
+            tagFilter.appendChild(tagButton);
+        });
+    }
+
+    function updateTagFilterButtons() {
+        const buttons = tagFilter.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.classList.remove('active');
+            if ((!activeTagFilter && button.textContent === 'All') || 
+                (button.textContent === activeTagFilter)) {
+                button.classList.add('active');
+            }
+        });
+    }
+
+    function clearFilters() {
+        activeTagFilter = null;
+        currentSearchTerm = '';
+        searchInput.value = '';
+        updateTagFilterButtons();
+        updateFlashcardsDisplay();
+    }
+
+    function exportFlashcards() {
+        if (flashcards.length === 0) {
+            showToast('No flashcards to export', 'error');
+            return;
+        }
+
+        const data = JSON.stringify(flashcards, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `flashcards-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('Flashcards exported successfully', 'success');
+    }
+
+    function importFlashcards(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedCards = JSON.parse(e.target.result);
+                if (!Array.isArray(importedCards)) {
+                    throw new Error('Invalid file format');
+                }
+
+                // Merge with existing cards, avoiding duplicates
+                const existingIds = new Set(flashcards.map(card => card.id));
+                const newCards = importedCards.filter(card => !existingIds.has(card.id));
+
+                if (newCards.length === 0) {
+                    showToast('No new flashcards to import', 'error');
+                    return;
+                }
+
+                flashcards = [...flashcards, ...newCards];
+                saveToLocalStorage();
+                updateFlashcardsDisplay();
+                updateTagFilter();
+                showToast(`Imported ${newCards.length} flashcards`, 'success');
+            } catch (error) {
+                showToast('Error importing flashcards', 'error');
+                console.error(error);
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // Reset input
+    }
+
+    function updateStats() {
+        const count = flashcards.length;
+        statsDisplay.textContent = `${count} flashcard${count !== 1 ? 's' : ''}`;
+    }
+
+    function showToast(message, type = '') {
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    function shuffleArray(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+    }
+
+    // Make clearFilters available globally for the empty state button
+    window.clearFilters = clearFilters;
+});</script>
+</body>
